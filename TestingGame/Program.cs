@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Humanizer;
+using OpenTK;
 
 #pragma warning disable 4014
 
 namespace TestingGame
 {
+	public class MainWindow : GameWindow { }
+
 	public class ProgramSender
 	{
 		private static bool running = true;
@@ -13,8 +16,10 @@ namespace TestingGame
 		public static async Task Main(string[] args)
 		{
 			Console.CancelKeyPress += OnCancel;
+			
+			new MainWindow().Run(60);
 
-			await WaitForExit();
+			//await WaitForExit();
 		}
 
 		private static void OnCancel(object sender, ConsoleCancelEventArgs e)
