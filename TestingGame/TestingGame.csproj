@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <DebugType>full</DebugType>
+    <OutputType>exe</OutputType>
+    <LangVersion>7.2</LangVersion>
+    <TargetFramework>net472</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.4.3" />
+    <PackageReference Include="Humanizer" Version="2.6.2" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+</Project>
