@@ -19,6 +19,19 @@ namespace TestingGame
 			Console.WriteLine("On Load");
 
 			CursorVisible = true;
+			VSync = VSyncMode.Off;
+		}
+
+		protected override void OnRenderFrame(FrameEventArgs e)
+		{
+			Title = $"(Vsync: {VSync}) FPS : {1f / e.Time:0}";
+
+			var backColor = Color4.SkyBlue;
+
+			GL.ClearColor(backColor);
+			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+			SwapBuffers();
 		}
 
 		protected override void OnResize(EventArgs e) => GL.Viewport(0, 0, Width, Height);
