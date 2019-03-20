@@ -4,6 +4,7 @@ using Humanizer;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
+using OpenTK.Input;
 
 #pragma warning disable 4014
 
@@ -17,13 +18,27 @@ namespace TestingGame
 			Title += $": OpenGL Version: {GL.GetString(StringName.Version)}";
 		}
 
-		protected override void OnResize(EventArgs e) => GL.Viewport(0, 0, Width, Height);
-
 		protected override void OnLoad(EventArgs e)
 		{
 			Console.WriteLine("On Load");
 
 			CursorVisible = true;
+		}
+
+		protected override void OnResize(EventArgs e) => GL.Viewport(0, 0, Width, Height);
+
+		protected override void OnUpdateFrame(FrameEventArgs e) => HandleKeyboard();
+
+		private void HandleKeyboard()
+		{
+			var keyState = Keyboard.GetState();
+
+			if (keyState.IsKeyDown(Key.Escape))
+			{
+				Console.WriteLine("Exiting . . . ");
+
+				Exit();
+			}
 		}
 	}
 
