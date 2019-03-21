@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Reflection;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
@@ -8,6 +10,20 @@ namespace TestingGame
 {
 	public class MainWindow : GameWindow
 	{
+		public static string ExecutingDirectory
+		{
+			get
+			{
+				var codeBase = Assembly.GetExecutingAssembly().CodeBase;
+
+				var uri = new UriBuilder(codeBase);
+
+				var path = Uri.UnescapeDataString(uri.Path);
+
+				return Path.GetDirectoryName(path);
+			}
+		}
+
 		public MainWindow()
 			: base(1280, 720, GraphicsMode.Default, "TestingGame", GameWindowFlags.Default, DisplayDevice.Default, 4, 0, GraphicsContextFlags.ForwardCompatible)
 		{
@@ -37,6 +53,34 @@ namespace TestingGame
 		protected override void OnResize(EventArgs e) => GL.Viewport(0, 0, Width, Height);
 
 		protected override void OnUpdateFrame(FrameEventArgs e) => HandleKeyboard();
+
+		private int CompileShaders()
+		{
+			var vertexShader = GL.CreateShader(ShaderType.VertexShader);
+
+			GL.ShaderSource(vertexShader, File.ReadAllText(Path.Combine(ExecutingDirectory, "Shaders\vertexShader.vert")));
+
+			GL.CompileShader(vertexShader);
+
+			var fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
+
+			GL.ShaderSource(fragmentShader, File.ReadAllText(Path.Combine(ExecutingDirectory, "Shaders\fragmentShader.frag")));
+			GL.CompileShader(fragmentShader);
+
+			var program = GL.CreateProgram();
+
+			GL.AttachShader(program, vertexShader);
+			GL.AttachShader(program, fragmentShader);
+
+			GL.LinkProgram(program);
+
+			GL.DetachShader(program, vertexShader);
+			GL.DetachShader(program, fragmentShader);
+			GL.DeleteShader(vertexShader);
+			GL.DeleteShader(fragmentShader);
+
+			return program;
+		}
 
 		private void HandleKeyboard()
 		{
