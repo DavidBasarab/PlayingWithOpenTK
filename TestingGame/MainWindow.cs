@@ -12,6 +12,8 @@ namespace TestingGame
 	{
 		private int shaderProgram;
 
+		private int vertextArray;
+
 		private string ExecutingDirectory
 		{
 			get
@@ -29,6 +31,14 @@ namespace TestingGame
 		public MainWindow()
 			: base(1280, 720, GraphicsMode.Default, "TestingGame", GameWindowFlags.Default, DisplayDevice.Default, 4, 0, GraphicsContextFlags.ForwardCompatible) => Title += $": OpenGL Version: {GL.GetString(StringName.Version)}";
 
+		public override void Exit()
+		{
+			GL.DeleteVertexArrays(1, ref vertextArray);
+			GL.DeleteProgram(shaderProgram);
+
+			base.Exit();
+		}
+
 		protected override void OnLoad(EventArgs e)
 		{
 			Console.WriteLine("On Load");
@@ -37,6 +47,9 @@ namespace TestingGame
 			VSync = VSyncMode.Off;
 
 			shaderProgram = CompileShaders();
+
+			GL.GenVertexArrays(1, out vertextArray);
+			GL.BindVertexArray(vertextArray);
 
 			Closed += OnClosed;
 		}
@@ -49,6 +62,11 @@ namespace TestingGame
 
 			GL.ClearColor(backColor);
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+			
+			GL.UseProgram(shaderProgram);
+			
+			GL.DrawArrays(PrimitiveType.Points, 0, 1);
+			GL.PointSize(10);
 
 			SwapBuffers();
 		}
@@ -60,13 +78,13 @@ namespace TestingGame
 		private int CompileShaders()
 		{
 			var vertexShader = GL.CreateShader(ShaderType.VertexShader);
-			
+
 			Console.WriteLine($"ExecutingDirectory <{ExecutingDirectory}>");
 
 			var vertexShaderPath = Path.Combine(ExecutingDirectory, @"Shaders\vertexShader.vert");
-			
+
 			Console.WriteLine($"Vertex Shader Path := {vertexShaderPath}");
-			
+
 			GL.ShaderSource(vertexShader, File.ReadAllText(vertexShaderPath));
 
 			GL.CompileShader(vertexShader);
@@ -101,13 +119,6 @@ namespace TestingGame
 
 				Exit();
 			}
-		}
-
-		public override void Exit()
-		{
-			GL.DeleteProgram(shaderProgram);
-			
-			base.Exit();
 		}
 
 		private void OnClosed(object sender, EventArgs e) => Exit();
