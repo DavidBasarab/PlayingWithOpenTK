@@ -10,7 +10,7 @@ namespace TestingGame
 {
 	public class MainWindow : GameWindow
 	{
-		public static string ExecutingDirectory
+		private static string ExecutingDirectory
 		{
 			get
 			{
@@ -24,7 +24,7 @@ namespace TestingGame
 			}
 		}
 
-		private int program;
+		private int shaderProgram;
 
 		public MainWindow()
 			: base(1280, 720, GraphicsMode.Default, "TestingGame", GameWindowFlags.Default, DisplayDevice.Default, 4, 0, GraphicsContextFlags.ForwardCompatible)
@@ -39,7 +39,7 @@ namespace TestingGame
 			CursorVisible = true;
 			VSync = VSyncMode.Off;
 
-			program = CompileShaders();
+			shaderProgram = CompileShaders();
 
 			Closed += OnClosed;
 		}
