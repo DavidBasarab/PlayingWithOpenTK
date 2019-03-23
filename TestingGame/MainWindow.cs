@@ -24,6 +24,8 @@ namespace TestingGame
 			}
 		}
 
+		private int program;
+
 		public MainWindow()
 			: base(1280, 720, GraphicsMode.Default, "TestingGame", GameWindowFlags.Default, DisplayDevice.Default, 4, 0, GraphicsContextFlags.ForwardCompatible)
 		{
@@ -36,6 +38,10 @@ namespace TestingGame
 
 			CursorVisible = true;
 			VSync = VSyncMode.Off;
+
+			program = CompileShaders();
+
+			Closed += OnClosed;
 		}
 
 		protected override void OnRenderFrame(FrameEventArgs e)
@@ -93,5 +99,7 @@ namespace TestingGame
 				Exit();
 			}
 		}
+
+		private void OnClosed(object sender, EventArgs e) { Exit(); }
 	}
 }
