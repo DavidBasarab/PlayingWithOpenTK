@@ -10,7 +10,9 @@ namespace TestingGame
 {
 	public class MainWindow : GameWindow
 	{
-		private static string ExecutingDirectory
+		private int shaderProgram;
+
+		private string ExecutingDirectory
 		{
 			get
 			{
@@ -24,13 +26,8 @@ namespace TestingGame
 			}
 		}
 
-		private int shaderProgram;
-
 		public MainWindow()
-			: base(1280, 720, GraphicsMode.Default, "TestingGame", GameWindowFlags.Default, DisplayDevice.Default, 4, 0, GraphicsContextFlags.ForwardCompatible)
-		{
-			Title += $": OpenGL Version: {GL.GetString(StringName.Version)}";
-		}
+			: base(1280, 720, GraphicsMode.Default, "TestingGame", GameWindowFlags.Default, DisplayDevice.Default, 4, 0, GraphicsContextFlags.ForwardCompatible) => Title += $": OpenGL Version: {GL.GetString(StringName.Version)}";
 
 		protected override void OnLoad(EventArgs e)
 		{
@@ -63,14 +60,20 @@ namespace TestingGame
 		private int CompileShaders()
 		{
 			var vertexShader = GL.CreateShader(ShaderType.VertexShader);
+			
+			Console.WriteLine($"ExecutingDirectory <{ExecutingDirectory}>");
 
-			GL.ShaderSource(vertexShader, File.ReadAllText(Path.Combine(ExecutingDirectory, "Shaders\vertexShader.vert")));
+			var vertexShaderPath = Path.Combine(ExecutingDirectory, @"Shaders\vertexShader.vert");
+			
+			Console.WriteLine($"Vertex Shader Path := {vertexShaderPath}");
+			
+			GL.ShaderSource(vertexShader, File.ReadAllText(vertexShaderPath));
 
 			GL.CompileShader(vertexShader);
 
 			var fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
 
-			GL.ShaderSource(fragmentShader, File.ReadAllText(Path.Combine(ExecutingDirectory, "Shaders\fragmentShader.frag")));
+			GL.ShaderSource(fragmentShader, File.ReadAllText(Path.Combine(ExecutingDirectory, @"Shaders\fragmentShader.frag")));
 			GL.CompileShader(fragmentShader);
 
 			var program = GL.CreateProgram();
@@ -100,6 +103,13 @@ namespace TestingGame
 			}
 		}
 
-		private void OnClosed(object sender, EventArgs e) { Exit(); }
+		public override void Exit()
+		{
+			GL.DeleteProgram(shaderProgram);
+			
+			base.Exit();
+		}
+
+		private void OnClosed(object sender, EventArgs e) => Exit();
 	}
 }

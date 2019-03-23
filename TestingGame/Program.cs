@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Humanizer;
 
 #pragma warning disable 4014
 
@@ -32,7 +31,7 @@ namespace TestingGame
 		{
 			Console.WriteLine("Press Control-C to exit . . .");
 
-			while (running) await Task.Delay(10.Milliseconds());
+			while (running) await Task.Delay(TimeSpan.FromMilliseconds(10));
 
 			Console.WriteLine("Exiting . . . .");
 		}
