@@ -70,7 +70,7 @@ namespace TestingGame
 			GL.UseProgram(shaderProgram);
 
 			GL.DrawArrays(PrimitiveType.Points, 0, 1);
-			GL.PointSize(10);
+			GL.PointSize(25);
 			
 			GL.VertexAttrib1(0, GameTime);
 			
