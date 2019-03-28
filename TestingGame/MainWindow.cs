@@ -28,6 +28,8 @@ namespace TestingGame
 			}
 		}
 
+		private double GameTime { get; set; }
+
 		public MainWindow()
 			: base(1280, 720, GraphicsMode.Default, "TestingGame", GameWindowFlags.Default, DisplayDevice.Default, 4, 0, GraphicsContextFlags.ForwardCompatible) => Title += $": OpenGL Version: {GL.GetString(StringName.Version)}";
 
@@ -56,17 +58,31 @@ namespace TestingGame
 
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
+			GameTime += e.Time;
+
 			Title = $"(Vsync: {VSync}) FPS : {1f / e.Time:0}";
 
 			var backColor = Color4.SkyBlue;
 
 			GL.ClearColor(backColor);
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-			
+
 			GL.UseProgram(shaderProgram);
-			
+
 			GL.DrawArrays(PrimitiveType.Points, 0, 1);
 			GL.PointSize(10);
+			
+			GL.VertexAttrib1(0, GameTime);
+			
+			Vector4 position = new Vector4()
+								{
+									X = (float)Math.Sin(GameTime) * 0.5f,
+									Y = (float)Math.Cos(GameTime) * 0.5f,
+									Z = 0.0f,
+									W = 1.0f
+								};
+			
+			GL.VertexAttrib4(1, position);
 
 			SwapBuffers();
 		}
