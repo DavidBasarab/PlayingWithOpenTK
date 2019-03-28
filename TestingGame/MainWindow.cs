@@ -62,7 +62,7 @@ namespace TestingGame
 
 			Title = $"(Vsync: {VSync}) FPS : {1f / e.Time:0}";
 
-			var backColor = Color4.SkyBlue;
+			var backColor = Color4.CornflowerBlue;
 
 			GL.ClearColor(backColor);
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -70,18 +70,18 @@ namespace TestingGame
 			GL.UseProgram(shaderProgram);
 
 			GL.DrawArrays(PrimitiveType.Points, 0, 1);
-			GL.PointSize(25);
-			
+			GL.PointSize(55);
+
 			GL.VertexAttrib1(0, GameTime);
-			
-			Vector4 position = new Vector4()
-								{
-									X = (float)Math.Sin(GameTime) * 0.5f,
-									Y = (float)Math.Cos(GameTime) * 0.5f,
-									Z = 0.0f,
-									W = 1.0f
-								};
-			
+
+			var position = new Vector4
+							{
+								X = (float)Math.Sin(GameTime) * 0.5f,
+								Y = (float)Math.Cos(GameTime) * 0.5f,
+								Z = 0.0f,
+								W = 1.0f
+							};
+
 			GL.VertexAttrib4(1, position);
 
 			SwapBuffers();
