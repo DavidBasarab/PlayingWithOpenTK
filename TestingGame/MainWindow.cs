@@ -12,7 +12,7 @@ namespace TestingGame
 	{
 		private int shaderProgram;
 
-		private int vertextArray;
+		private int vertexArray;
 
 		private string ExecutingDirectory
 		{
@@ -33,7 +33,7 @@ namespace TestingGame
 
 		public override void Exit()
 		{
-			GL.DeleteVertexArrays(1, ref vertextArray);
+			GL.DeleteVertexArrays(1, ref vertexArray);
 			GL.DeleteProgram(shaderProgram);
 
 			base.Exit();
@@ -48,8 +48,8 @@ namespace TestingGame
 
 			shaderProgram = CompileShaders();
 
-			GL.GenVertexArrays(1, out vertextArray);
-			GL.BindVertexArray(vertextArray);
+			GL.GenVertexArrays(1, out vertexArray);
+			GL.BindVertexArray(vertexArray);
 
 			Closed += OnClosed;
 		}
