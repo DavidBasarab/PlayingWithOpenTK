@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 
 #pragma warning disable 4014
 
-namespace TestingGame
+namespace MongoGame
 {
-	//http://dreamstatecoding.blogspot.com/2017/01/opengl-4-with-opentk-in-c-part-2.html
+	//https://www.gamefromscratch.com/post/2015/06/15/MonoGame-Tutorial-Creating-an-Application.aspx
 	public class ProgramSender
 	{
 		private static bool running = true;
