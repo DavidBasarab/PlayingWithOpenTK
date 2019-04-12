@@ -18,6 +18,9 @@ namespace MongoGame
 		protected override void Draw(GameTime gameTime)
 		{
 			GraphicsDevice.Clear(Color.CornflowerBlue);
+			
+			// TODO Add drawing code
+			
 			base.Draw(gameTime);
 		}
 
