@@ -185,6 +185,30 @@ namespace TestingGame
 			triangle.Initialize();
 
 			Triangles.Add(triangle);
+			
+			triangle = new Triangle
+						{
+							PointA = new PointF(1.0f, 0.5f),
+							PointB = new PointF(0f, 1f),
+							PointC = new PointF(0f, 0f),
+							Color = Color.Green
+						};
+
+			triangle.Initialize();
+
+			Triangles.Add(triangle);
+			
+			triangle = new Triangle
+						{
+							PointA = new PointF(1.0f, -0.5f),
+							PointB = new PointF(0f, -1f),
+							PointC = new PointF(0f, 0f),
+							Color = Color.Orange
+						};
+
+			triangle.Initialize();
+
+			Triangles.Add(triangle);
 		}
 
 		private void HandleKeyboard()
