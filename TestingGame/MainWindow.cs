@@ -10,11 +10,75 @@ using OpenTK.Input;
 
 namespace TestingGame
 {
+	public class ShaderProgram : IDisposable
+	{
+		private readonly string fragmentShaderPath;
+		private readonly string vertexShaderPath;
+
+		private int programId = -77;
+
+		public ShaderProgram(string vertexShaderPath, string fragmentShaderPath)
+		{
+			this.vertexShaderPath = vertexShaderPath;
+			this.fragmentShaderPath = fragmentShaderPath;
+
+			VerifyFileExists(vertexShaderPath, "vert");
+			VerifyFileExists(fragmentShaderPath, "frag");
+
+			LoadShader();
+		}
+
+		public void Dispose()
+		{
+			if (programId != -77) GL.DeleteProgram(programId);
+		}
+
+		public void Use() => GL.UseProgram(programId);
+
+		private void LoadShader()
+		{
+			var vertexShader = GL.CreateShader(ShaderType.VertexShader);
+
+			Console.WriteLine($"Vertex Shader Path := {vertexShaderPath}");
+
+			GL.ShaderSource(vertexShader, File.ReadAllText(vertexShaderPath));
+
+			GL.CompileShader(vertexShader);
+
+			var fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
+			
+			Console.WriteLine($"Fragment Shader Path := {fragmentShaderPath}");
+
+			GL.ShaderSource(fragmentShader, File.ReadAllText(fragmentShaderPath));
+			GL.CompileShader(fragmentShader);
+
+			programId = GL.CreateProgram();
+
+			GL.AttachShader(programId, vertexShader);
+			GL.AttachShader(programId, fragmentShader);
+
+			GL.LinkProgram(programId);
+
+			GL.DetachShader(programId, vertexShader);
+			GL.DetachShader(programId, fragmentShader);
+			GL.DeleteShader(vertexShader);
+			GL.DeleteShader(fragmentShader);
+		}
+
+		private static void VerifyFileExists(string path, string extension)
+		{
+			if (!File.Exists(path)) throw new FileNotFoundException(path);
+
+			var fileExtension = Path.GetExtension(path);
+
+			if (fileExtension.ToLower() == extension.ToLower()) throw new InvalidOperationException($"Extension should be <{extension}>");
+		}
+	}
+
 	//http://dreamstatecoding.blogspot.com/2017/02/opengl-4-with-opentk-in-c-part-6.html
 	public class MainWindow : GameWindow
 	{
-		private int fillShaderProgram;
-
+		private ShaderProgram fillShaderProgram;
 		private bool stopped;
 
 		private string ExecutingDirectory
@@ -50,8 +114,7 @@ namespace TestingGame
 
 			foreach (var triangle in Triangles) triangle.Dispose();
 
-			// GL.DeleteVertexArrays(1, ref vertexArray);
-			GL.DeleteProgram(fillShaderProgram);
+			fillShaderProgram.Dispose();
 
 			base.Exit();
 		}
@@ -68,7 +131,7 @@ namespace TestingGame
 			CursorVisible = true;
 			VSync = VSyncMode.Off;
 
-			fillShaderProgram = CompileShaders();
+			CompileShaders();
 
 			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
 			GL.PatchParameter(PatchParameterInt.PatchVertices, 3);
@@ -100,39 +163,7 @@ namespace TestingGame
 
 		protected override void OnUpdateFrame(FrameEventArgs e) => HandleKeyboard();
 
-		private int CompileShaders()
-		{
-			var vertexShader = GL.CreateShader(ShaderType.VertexShader);
-
-			Console.WriteLine($"ExecutingDirectory <{ExecutingDirectory}>");
-
-			var vertexShaderPath = Path.Combine(ExecutingDirectory, @"Shaders\fillVertexShader.vert");
-
-			Console.WriteLine($"Vertex Shader Path := {vertexShaderPath}");
-
-			GL.ShaderSource(vertexShader, File.ReadAllText(vertexShaderPath));
-
-			GL.CompileShader(vertexShader);
-
-			var fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
-
-			GL.ShaderSource(fragmentShader, File.ReadAllText(Path.Combine(ExecutingDirectory, @"Shaders\fragmentShader.frag")));
-			GL.CompileShader(fragmentShader);
-
-			var program = GL.CreateProgram();
-
-			GL.AttachShader(program, vertexShader);
-			GL.AttachShader(program, fragmentShader);
-
-			GL.LinkProgram(program);
-
-			GL.DetachShader(program, vertexShader);
-			GL.DetachShader(program, fragmentShader);
-			GL.DeleteShader(vertexShader);
-			GL.DeleteShader(fragmentShader);
-
-			return program;
-		}
+		private void CompileShaders() { fillShaderProgram = new ShaderProgram(Path.Combine(ExecutingDirectory, @"Shaders\fillVertexShader.vert"), Path.Combine(ExecutingDirectory, @"Shaders\fragmentShader.frag")); }
 
 		private void CreateTriangles()
 		{
@@ -201,7 +232,7 @@ namespace TestingGame
 
 		private void RenderTriangles()
 		{
-			GL.UseProgram(fillShaderProgram);
+			fillShaderProgram.Use();
 
 			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
 
