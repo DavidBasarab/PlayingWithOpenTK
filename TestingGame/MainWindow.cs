@@ -63,7 +63,7 @@ namespace TestingGame
 	//http://dreamstatecoding.blogspot.com/2017/02/opengl-4-with-opentk-in-c-part-6.html
 	public class MainWindow : GameWindow
 	{
-		private int shaderProgram;
+		private int fillShaderProgram;
 
 		private bool stopped;
 
@@ -101,7 +101,7 @@ namespace TestingGame
 			foreach (var triangle in Triangles) triangle.Dispose();
 
 			// GL.DeleteVertexArrays(1, ref vertexArray);
-			GL.DeleteProgram(shaderProgram);
+			GL.DeleteProgram(fillShaderProgram);
 
 			base.Exit();
 		}
@@ -118,7 +118,7 @@ namespace TestingGame
 			CursorVisible = true;
 			VSync = VSyncMode.Off;
 
-			shaderProgram = CompileShaders();
+			fillShaderProgram = CompileShaders();
 
 			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
 			GL.PatchParameter(PatchParameterInt.PatchVertices, 3);
@@ -137,14 +137,10 @@ namespace TestingGame
 			GL.ClearColor(backColor);
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-			GL.UseProgram(shaderProgram);
-
-			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
-			
-			foreach (var triangle in Triangles) triangle.Render();
+			RenderTriangles();
 
 			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
-			
+
 			foreach (var renderObject in RenderObjects) renderObject.Render();
 
 			SwapBuffers();
@@ -160,7 +156,7 @@ namespace TestingGame
 
 			Console.WriteLine($"ExecutingDirectory <{ExecutingDirectory}>");
 
-			var vertexShaderPath = Path.Combine(ExecutingDirectory, @"Shaders\vertexShader.vert");
+			var vertexShaderPath = Path.Combine(ExecutingDirectory, @"Shaders\fillVertexShader.vert");
 
 			Console.WriteLine($"Vertex Shader Path := {vertexShaderPath}");
 
@@ -252,5 +248,14 @@ namespace TestingGame
 		}
 
 		private void OnClosed(object sender, EventArgs e) => Exit();
+
+		private void RenderTriangles()
+		{
+			GL.UseProgram(fillShaderProgram);
+
+			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+
+			foreach (var triangle in Triangles) triangle.Render();
+		}
 	}
 }
