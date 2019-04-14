@@ -26,6 +26,8 @@ namespace TestingGame
 
 		public void Initialize()
 		{
+			Console.WriteLine($"PointA <{PointA}> | PointB <{PointB}> | PointC <{PointC}>");
+			
 			var vertices = new List<Vertex>
 							{
 								CreateVertex(PointA),
@@ -91,9 +93,9 @@ namespace TestingGame
 
 			Triangle = new Triangle
 						{
-							PointA = new PointF(-.25f, .25f),
-							PointB = new PointF(0f, -.25f),
-							PointC = new PointF(0.25f, 0.25f),
+							PointA = new PointF(0.0f, 0.0f),
+							PointB = new PointF(1f, 1f),
+							PointC = new PointF(-1f, 1f),
 							Color = Color.Purple
 						};
 
