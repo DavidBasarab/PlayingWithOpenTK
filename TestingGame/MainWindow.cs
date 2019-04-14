@@ -110,7 +110,7 @@ namespace TestingGame
 		{
 			Console.WriteLine("On Load");
 
-			//CreateTriangles();
+			CreateTriangles();
 			var cubeVertices = ShapeFactory.CreateSolidCube(1.0f, Color4.Red);
 
 			RenderObjects.Add(new RenderObject(cubeVertices));
@@ -139,8 +139,12 @@ namespace TestingGame
 
 			GL.UseProgram(shaderProgram);
 
+			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+			
 			foreach (var triangle in Triangles) triangle.Render();
 
+			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
+			
 			foreach (var renderObject in RenderObjects) renderObject.Render();
 
 			SwapBuffers();
