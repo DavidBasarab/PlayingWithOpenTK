@@ -111,7 +111,7 @@ namespace TestingGame
 			Console.WriteLine("On Load");
 
 			//CreateTriangles();
-			var cubeVertices = ShapeFactory.CreateSolidCube(0.2f, Color4.Red);
+			var cubeVertices = ShapeFactory.CreateSolidCube(1.0f, Color4.Red);
 
 			RenderObjects.Add(new RenderObject(cubeVertices));
 
@@ -120,7 +120,7 @@ namespace TestingGame
 
 			shaderProgram = CompileShaders();
 
-			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
 			GL.PatchParameter(PatchParameterInt.PatchVertices, 3);
 
 			Closed += OnClosed;
