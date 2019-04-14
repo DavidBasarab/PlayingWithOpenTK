@@ -14,15 +14,13 @@ namespace TestingGame
 	{
 		private RenderObject renderObject;
 
+		public Color Color { get; set; }
+
 		public PointF PointA { get; set; }
 
 		public PointF PointB { get; set; }
 
 		public PointF PointC { get; set; }
-
-		public Color Color { get; set; }
-
-		private Vertex CreateVertex(PointF point) => new Vertex(new Vector4(point.X, point.Y, 0.5f, 1.0f), Color);
 
 		public void Dispose() => renderObject.Dispose();
 
@@ -39,12 +37,16 @@ namespace TestingGame
 		}
 
 		public void Render() => renderObject.Render();
+
+		private Vertex CreateVertex(PointF point) => new Vertex(new Vector4(point.X, point.Y, 0.5f, 1.0f), Color);
 	}
 
 	//http://dreamstatecoding.blogspot.com/2017/02/opengl-4-with-opentk-in-c-part-5.html
 	public class MainWindow : GameWindow
 	{
 		private int shaderProgram;
+
+		private bool stopped;
 
 		private string ExecutingDirectory
 		{
@@ -69,6 +71,10 @@ namespace TestingGame
 
 		public override void Exit()
 		{
+			if (stopped) return;
+
+			stopped = true;
+
 			Console.WriteLine("Exit called");
 
 			Triangle.Dispose();
@@ -90,7 +96,7 @@ namespace TestingGame
 							PointC = new PointF(0.25f, 0.25f),
 							Color = Color.Purple
 						};
-			
+
 			Triangle.Initialize();
 
 			CursorVisible = true;
