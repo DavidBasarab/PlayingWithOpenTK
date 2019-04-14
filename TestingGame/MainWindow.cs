@@ -9,99 +9,6 @@ using OpenTK.Input;
 
 namespace TestingGame
 {
-	public struct Vertex
-	{
-		public const int Size = (4 + 4) * 4;
-
-		private readonly Vector4 position;
-		private readonly Color4 color;
-
-		public Vertex(Vector4 position, Color4 color)
-		{
-			this.position = position;
-			this.color = color;
-		}
-	}
-
-	public class RenderObject : IDisposable
-	{
-		private readonly int buffer;
-
-		private readonly int vertexArray;
-		private readonly int verticeCount;
-		private bool initialized;
-
-		public RenderObject(List<Vertex> vertices)
-		{
-			verticeCount = vertices.Count;
-
-			vertexArray = GL.GenVertexArray();
-			buffer = GL.GenBuffer();
-
-			GL.BindVertexArray(vertexArray);
-			GL.BindBuffer(BufferTarget.ArrayBuffer, vertexArray);
-
-			// create first buffer: vertex
-			GL.NamedBufferStorage(
-								buffer,
-								Vertex.Size * vertices.Count,    // the size needed by this buffer
-								vertices.ToArray(),              // data to initialize with
-								BufferStorageFlags.MapWriteBit); // at this point we will only write to the buffer
-
-			GL.VertexArrayAttribBinding(vertexArray, 0, 0);
-			GL.EnableVertexArrayAttrib(vertexArray, 0);
-
-			GL.VertexArrayAttribFormat(
-										vertexArray,
-										0,                      // attribute index, from the shader location = 0
-										4,                      // size of attribute, vec4
-										VertexAttribType.Float, // contains floats
-										false,                  // does not need to be normalized as it is already, floats ignore this flag anyway
-										0);                     // relative offset, first item
-
-			GL.VertexArrayAttribBinding(vertexArray, 1, 0);
-
-			GL.EnableVertexArrayAttrib(vertexArray, 1);
-
-			GL.VertexArrayAttribFormat(
-										vertexArray,
-										1,                      // attribute index, from the shader location = 1
-										4,                      // size of attribute, vec4
-										VertexAttribType.Float, // contains floats
-										false,                  // does not need to be normalized as it is already, floats ignore this flag anyway
-										16);                    // relative offset after a vec4
-
-			// link the vertex array and buffer and provide the stride as size of Vertex
-			GL.VertexArrayVertexBuffer(vertexArray, 0, buffer, IntPtr.Zero, Vertex.Size);
-
-			initialized = true;
-		}
-
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		public void Render()
-		{
-			GL.BindVertexArray(vertexArray);
-			GL.DrawArrays(PrimitiveType.Triangles, 0, verticeCount);
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (!disposing) return;
-
-			if (!initialized) return;
-
-			GL.DeleteVertexArray(vertexArray);
-			GL.DeleteBuffer(buffer);
-
-			initialized = false;
-		}
-	}
-
 	//http://dreamstatecoding.blogspot.com/2017/02/opengl-4-with-opentk-in-c-part-5.html
 	public class MainWindow : GameWindow
 	{
@@ -158,9 +65,6 @@ namespace TestingGame
 
 			shaderProgram = CompileShaders();
 
-			// GL.GenVertexArrays(1, out vertexArray);
-			// GL.BindVertexArray(vertexArray);
-
 			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
 			GL.PatchParameter(PatchParameterInt.PatchVertices, 3);
 
@@ -177,22 +81,6 @@ namespace TestingGame
 
 			GL.ClearColor(backColor);
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
-			// DrawRectangle(new Vector4
-			// 			{
-			// 				X = .1f + (float)Math.Sin(GameTime) * 0.5f,
-			// 				Y = .1f + (float)Math.Cos(GameTime) * 0.5f,
-			// 				Z = 0.0f,
-			// 				W = 1.0f
-			// 			});
-			//
-			// DrawRectangle(new Vector4
-			// 			{
-			// 				X = .4f + (float)Math.Sin(GameTime) * 0.25f,
-			// 				Y = .6f + (float)Math.Cos(GameTime) * 0.25f,
-			// 				Z = 0.0f,
-			// 				W = 1.0f
-			// 			});
 
 			GL.UseProgram(shaderProgram);
 
@@ -237,18 +125,6 @@ namespace TestingGame
 			GL.DeleteShader(fragmentShader);
 
 			return program;
-		}
-
-		private void DrawRectangle(Vector4 position)
-		{
-			GL.UseProgram(shaderProgram);
-
-			GL.DrawArrays(PrimitiveType.Points, 0, 1);
-			GL.PointSize(55);
-
-			GL.VertexAttrib1(0, GameTime);
-
-			GL.VertexAttrib4(1, position);
 		}
 
 		private void HandleKeyboard()
