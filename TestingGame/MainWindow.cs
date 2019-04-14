@@ -27,7 +27,7 @@ namespace TestingGame
 		public void Initialize()
 		{
 			Console.WriteLine($"PointA <{PointA}> | PointB <{PointB}> | PointC <{PointC}>");
-			
+
 			var vertices = new List<Vertex>
 							{
 								CreateVertex(PointA),
@@ -66,7 +66,7 @@ namespace TestingGame
 
 		private double GameTime { get; set; }
 
-		private Triangle Triangle { get; set; }
+		private List<Triangle> Triangles { get; } = new List<Triangle>();
 
 		public MainWindow()
 			: base(1280, 720, GraphicsMode.Default, "TestingGame", GameWindowFlags.Default, DisplayDevice.Default, 4, 5, GraphicsContextFlags.ForwardCompatible) => Title += $": OpenGL Version: {GL.GetString(StringName.Version)}";
@@ -79,7 +79,7 @@ namespace TestingGame
 
 			Console.WriteLine("Exit called");
 
-			Triangle.Dispose();
+			foreach (var triangle in Triangles) triangle.Dispose();
 
 			// GL.DeleteVertexArrays(1, ref vertexArray);
 			GL.DeleteProgram(shaderProgram);
@@ -91,15 +91,7 @@ namespace TestingGame
 		{
 			Console.WriteLine("On Load");
 
-			Triangle = new Triangle
-						{
-							PointA = new PointF(-0.5f, 0.0f),
-							PointB = new PointF(-1f, -1f),
-							PointC = new PointF(0f, -1f),
-							Color = Color.Purple
-						};
-
-			Triangle.Initialize();
+			CreateTriangles();
 
 			CursorVisible = true;
 			VSync = VSyncMode.Off;
@@ -125,7 +117,7 @@ namespace TestingGame
 
 			GL.UseProgram(shaderProgram);
 
-			Triangle.Render();
+			foreach (var triangle in Triangles) triangle.Render();
 
 			SwapBuffers();
 		}
@@ -166,6 +158,33 @@ namespace TestingGame
 			GL.DeleteShader(fragmentShader);
 
 			return program;
+		}
+
+		private void CreateTriangles()
+		{
+			var firstTriangle = new Triangle
+								{
+									PointA = new PointF(-0.5f, 0.0f),
+									PointB = new PointF(-1f, -1f),
+									PointC = new PointF(0f, -1f),
+									Color = Color.Purple
+								};
+
+			firstTriangle.Initialize();
+
+			Triangles.Add(firstTriangle);
+
+			var secondTriangle = new Triangle
+								{
+									PointA = new PointF(-0.5f, 0.0f),
+									PointB = new PointF(-1f, 1f),
+									PointC = new PointF(0f, 1f),
+									Color = Color.HotPink
+								};
+
+			secondTriangle.Initialize();
+
+			Triangles.Add(secondTriangle);
 		}
 
 		private void HandleKeyboard()
