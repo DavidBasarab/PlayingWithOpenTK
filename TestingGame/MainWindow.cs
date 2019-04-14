@@ -162,7 +162,7 @@ namespace TestingGame
 
 		private void CreateTriangles()
 		{
-			var firstTriangle = new Triangle
+			var triangle = new Triangle
 								{
 									PointA = new PointF(-0.5f, 0.0f),
 									PointB = new PointF(-1f, -1f),
@@ -170,11 +170,11 @@ namespace TestingGame
 									Color = Color.Purple
 								};
 
-			firstTriangle.Initialize();
+			triangle.Initialize();
 
-			Triangles.Add(firstTriangle);
+			Triangles.Add(triangle);
 
-			var secondTriangle = new Triangle
+			triangle = new Triangle
 								{
 									PointA = new PointF(-0.5f, 0.0f),
 									PointB = new PointF(-1f, 1f),
@@ -182,9 +182,9 @@ namespace TestingGame
 									Color = Color.HotPink
 								};
 
-			secondTriangle.Initialize();
+			triangle.Initialize();
 
-			Triangles.Add(secondTriangle);
+			Triangles.Add(triangle);
 		}
 
 		private void HandleKeyboard()
