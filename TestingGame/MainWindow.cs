@@ -93,9 +93,9 @@ namespace TestingGame
 
 			Triangle = new Triangle
 						{
-							PointA = new PointF(0.0f, 0.0f),
-							PointB = new PointF(1f, 1f),
-							PointC = new PointF(-1f, 1f),
+							PointA = new PointF(-0.5f, 0.0f),
+							PointB = new PointF(-1f, -1f),
+							PointC = new PointF(0f, -1f),
 							Color = Color.Purple
 						};
 
