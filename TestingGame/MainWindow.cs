@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using OpenTK;
@@ -30,9 +31,9 @@ namespace TestingGame
 		private readonly int verticeCount;
 		private bool initialized;
 
-		public RenderObject(Vertex[] vertices)
+		public RenderObject(List<Vertex> vertices)
 		{
-			verticeCount = vertices.Length;
+			verticeCount = vertices.Count;
 
 			vertexArray = GL.GenVertexArray();
 			buffer = GL.GenBuffer();
@@ -43,8 +44,8 @@ namespace TestingGame
 			// create first buffer: vertex
 			GL.NamedBufferStorage(
 								buffer,
-								Vertex.Size * vertices.Length,   // the size needed by this buffer
-								vertices,                        // data to initialize with
+								Vertex.Size * vertices.Count,    // the size needed by this buffer
+								vertices.ToArray(),              // data to initialize with
 								BufferStorageFlags.MapWriteBit); // at this point we will only write to the buffer
 
 			GL.VertexArrayAttribBinding(vertexArray, 0, 0);
@@ -106,8 +107,6 @@ namespace TestingGame
 	{
 		private int shaderProgram;
 
-		private int vertexArray;
-
 		private string ExecutingDirectory
 		{
 			get
@@ -124,12 +123,18 @@ namespace TestingGame
 
 		private double GameTime { get; set; }
 
+		private List<RenderObject> RenderObjects { get; } = new List<RenderObject>();
+
 		public MainWindow()
 			: base(1280, 720, GraphicsMode.Default, "TestingGame", GameWindowFlags.Default, DisplayDevice.Default, 4, 5, GraphicsContextFlags.ForwardCompatible) => Title += $": OpenGL Version: {GL.GetString(StringName.Version)}";
 
 		public override void Exit()
 		{
-			GL.DeleteVertexArrays(1, ref vertexArray);
+			Console.WriteLine("Exit called");
+
+			foreach (var renderObject in RenderObjects) renderObject.Dispose();
+
+			// GL.DeleteVertexArrays(1, ref vertexArray);
 			GL.DeleteProgram(shaderProgram);
 
 			base.Exit();
@@ -139,13 +144,25 @@ namespace TestingGame
 		{
 			Console.WriteLine("On Load");
 
+			var vertices = new List<Vertex>
+							{
+								new Vertex(new Vector4(-.25f, 0.25f, 0.5f, 1.0f), Color4.HotPink),
+								new Vertex(new Vector4(0.0f, -0.25f, 0.5f, 1.0f), Color4.Gray),
+								new Vertex(new Vector4(0.25f, 0.25f, 0.5f, 1.0f), Color4.Yellow)
+							};
+
+			RenderObjects.Add(new RenderObject(vertices));
+
 			CursorVisible = true;
 			VSync = VSyncMode.Off;
 
 			shaderProgram = CompileShaders();
 
-			GL.GenVertexArrays(1, out vertexArray);
-			GL.BindVertexArray(vertexArray);
+			// GL.GenVertexArrays(1, out vertexArray);
+			// GL.BindVertexArray(vertexArray);
+
+			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+			GL.PatchParameter(PatchParameterInt.PatchVertices, 3);
 
 			Closed += OnClosed;
 		}
@@ -161,21 +178,25 @@ namespace TestingGame
 			GL.ClearColor(backColor);
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-			DrawRectangle(new Vector4
-						{
-							X = .1f + (float)Math.Sin(GameTime) * 0.5f,
-							Y = .1f + (float)Math.Cos(GameTime) * 0.5f,
-							Z = 0.0f,
-							W = 1.0f
-						});
+			// DrawRectangle(new Vector4
+			// 			{
+			// 				X = .1f + (float)Math.Sin(GameTime) * 0.5f,
+			// 				Y = .1f + (float)Math.Cos(GameTime) * 0.5f,
+			// 				Z = 0.0f,
+			// 				W = 1.0f
+			// 			});
+			//
+			// DrawRectangle(new Vector4
+			// 			{
+			// 				X = .4f + (float)Math.Sin(GameTime) * 0.25f,
+			// 				Y = .6f + (float)Math.Cos(GameTime) * 0.25f,
+			// 				Z = 0.0f,
+			// 				W = 1.0f
+			// 			});
 
-			DrawRectangle(new Vector4
-						{
-							X = .4f + (float)Math.Sin(GameTime) * 0.25f,
-							Y = .6f + (float)Math.Cos(GameTime) * 0.25f,
-							Z = 0.0f,
-							W = 1.0f
-						});
+			GL.UseProgram(shaderProgram);
+
+			foreach (var renderObject in RenderObjects) renderObject.Render();
 
 			SwapBuffers();
 		}
