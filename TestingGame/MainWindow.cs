@@ -10,75 +10,13 @@ using OpenTK.Input;
 
 namespace TestingGame
 {
-	public class ShaderProgram : IDisposable
-	{
-		private readonly string fragmentShaderPath;
-		private readonly string vertexShaderPath;
-
-		private int programId = -77;
-
-		public ShaderProgram(string vertexShaderPath, string fragmentShaderPath)
-		{
-			this.vertexShaderPath = vertexShaderPath;
-			this.fragmentShaderPath = fragmentShaderPath;
-
-			VerifyFileExists(vertexShaderPath, "vert");
-			VerifyFileExists(fragmentShaderPath, "frag");
-
-			LoadShader();
-		}
-
-		public void Dispose()
-		{
-			if (programId != -77) GL.DeleteProgram(programId);
-		}
-
-		public void Use() => GL.UseProgram(programId);
-
-		private void LoadShader()
-		{
-			var vertexShader = GL.CreateShader(ShaderType.VertexShader);
-
-			Console.WriteLine($"Vertex Shader Path := {vertexShaderPath}");
-
-			GL.ShaderSource(vertexShader, File.ReadAllText(vertexShaderPath));
-
-			GL.CompileShader(vertexShader);
-
-			var fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
-			
-			Console.WriteLine($"Fragment Shader Path := {fragmentShaderPath}");
-
-			GL.ShaderSource(fragmentShader, File.ReadAllText(fragmentShaderPath));
-			GL.CompileShader(fragmentShader);
-
-			programId = GL.CreateProgram();
-
-			GL.AttachShader(programId, vertexShader);
-			GL.AttachShader(programId, fragmentShader);
-
-			GL.LinkProgram(programId);
-
-			GL.DetachShader(programId, vertexShader);
-			GL.DetachShader(programId, fragmentShader);
-			GL.DeleteShader(vertexShader);
-			GL.DeleteShader(fragmentShader);
-		}
-
-		private static void VerifyFileExists(string path, string extension)
-		{
-			if (!File.Exists(path)) throw new FileNotFoundException(path);
-
-			var fileExtension = Path.GetExtension(path);
-
-			if (fileExtension.ToLower() == extension.ToLower()) throw new InvalidOperationException($"Extension should be <{extension}>");
-		}
-	}
-
 	//http://dreamstatecoding.blogspot.com/2017/02/opengl-4-with-opentk-in-c-part-6.html
 	public class MainWindow : GameWindow
 	{
 		private ShaderProgram fillShaderProgram;
+		private ShaderProgram modelShaderProgram;
+
+		private Matrix4 modelView;
 		private bool stopped;
 
 		private string ExecutingDirectory
@@ -115,6 +53,7 @@ namespace TestingGame
 			foreach (var triangle in Triangles) triangle.Dispose();
 
 			fillShaderProgram.Dispose();
+			modelShaderProgram.Dispose();
 
 			base.Exit();
 		}
@@ -153,6 +92,11 @@ namespace TestingGame
 			RenderTriangles();
 
 			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
+			
+			modelShaderProgram.Use();
+			
+			// 20 is the location in the shader
+			GL.UniformMatrix4(20, false, ref modelView);
 
 			foreach (var renderObject in RenderObjects) renderObject.Render();
 
@@ -161,9 +105,26 @@ namespace TestingGame
 
 		protected override void OnResize(EventArgs e) => GL.Viewport(0, 0, Width, Height);
 
-		protected override void OnUpdateFrame(FrameEventArgs e) => HandleKeyboard();
+		protected override void OnUpdateFrame(FrameEventArgs e)
+		{
+			GameTime += e.Time;
 
-		private void CompileShaders() { fillShaderProgram = new ShaderProgram(Path.Combine(ExecutingDirectory, @"Shaders\fillVertexShader.vert"), Path.Combine(ExecutingDirectory, @"Shaders\fragmentShader.frag")); }
+			var k = (float)GameTime * 0.05f;
+
+			var r1 = Matrix4.CreateRotationX(k * 6.0f);
+			var r2 = Matrix4.CreateRotationY(k * 6.0f);
+			var r3 = Matrix4.CreateRotationZ(k * 1.5f);
+
+			modelView = r1 * r2 * r3;
+
+			HandleKeyboard();
+		}
+
+		private void CompileShaders()
+		{
+			fillShaderProgram = new ShaderProgram(Path.Combine(ExecutingDirectory, @"Shaders\fillVertexShader.vert"), Path.Combine(ExecutingDirectory, @"Shaders\fragmentShader.frag"));
+			modelShaderProgram = new ShaderProgram(Path.Combine(ExecutingDirectory, @"Shaders\ModelVertexShader.vert"), Path.Combine(ExecutingDirectory, @"Shaders\fragmentShader.frag"));
+		}
 
 		private void CreateTriangles()
 		{
