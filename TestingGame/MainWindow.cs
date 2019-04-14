@@ -22,6 +22,7 @@ namespace TestingGame
 		}
 	}
 
+	//http://dreamstatecoding.blogspot.com/2017/02/opengl-4-with-opentk-in-c-part-5.html
 	public class MainWindow : GameWindow
 	{
 		private int shaderProgram;
@@ -45,7 +46,7 @@ namespace TestingGame
 		private double GameTime { get; set; }
 
 		public MainWindow()
-			: base(1280, 720, GraphicsMode.Default, "TestingGame", GameWindowFlags.Default, DisplayDevice.Default, 4, 0, GraphicsContextFlags.ForwardCompatible) => Title += $": OpenGL Version: {GL.GetString(StringName.Version)}";
+			: base(1280, 720, GraphicsMode.Default, "TestingGame", GameWindowFlags.Default, DisplayDevice.Default, 4, 5, GraphicsContextFlags.ForwardCompatible) => Title += $": OpenGL Version: {GL.GetString(StringName.Version)}";
 
 		public override void Exit()
 		{
