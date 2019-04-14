@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Reflection;
 using OpenTK;
@@ -9,6 +10,37 @@ using OpenTK.Input;
 
 namespace TestingGame
 {
+	public class Triangle : IDisposable
+	{
+		private RenderObject renderObject;
+
+		public PointF PointA { get; set; }
+
+		public PointF PointB { get; set; }
+
+		public PointF PointC { get; set; }
+
+		public Color Color { get; set; }
+
+		private Vertex CreateVertex(PointF point) => new Vertex(new Vector4(point.X, point.Y, 0.5f, 1.0f), Color);
+
+		public void Dispose() => renderObject.Dispose();
+
+		public void Initialize()
+		{
+			var vertices = new List<Vertex>
+							{
+								CreateVertex(PointA),
+								CreateVertex(PointB),
+								CreateVertex(PointC)
+							};
+
+			renderObject = new RenderObject(vertices);
+		}
+
+		public void Render() => renderObject.Render();
+	}
+
 	//http://dreamstatecoding.blogspot.com/2017/02/opengl-4-with-opentk-in-c-part-5.html
 	public class MainWindow : GameWindow
 	{
@@ -30,7 +62,7 @@ namespace TestingGame
 
 		private double GameTime { get; set; }
 
-		private List<RenderObject> RenderObjects { get; } = new List<RenderObject>();
+		private Triangle Triangle { get; set; }
 
 		public MainWindow()
 			: base(1280, 720, GraphicsMode.Default, "TestingGame", GameWindowFlags.Default, DisplayDevice.Default, 4, 5, GraphicsContextFlags.ForwardCompatible) => Title += $": OpenGL Version: {GL.GetString(StringName.Version)}";
@@ -39,7 +71,7 @@ namespace TestingGame
 		{
 			Console.WriteLine("Exit called");
 
-			foreach (var renderObject in RenderObjects) renderObject.Dispose();
+			Triangle.Dispose();
 
 			// GL.DeleteVertexArrays(1, ref vertexArray);
 			GL.DeleteProgram(shaderProgram);
@@ -51,14 +83,15 @@ namespace TestingGame
 		{
 			Console.WriteLine("On Load");
 
-			var vertices = new List<Vertex>
-							{
-								new Vertex(new Vector4(-.25f, 0.25f, 0.5f, 1.0f), Color4.HotPink),
-								new Vertex(new Vector4(0.0f, -0.25f, 0.5f, 1.0f), Color4.Gray),
-								new Vertex(new Vector4(0.25f, 0.25f, 0.5f, 1.0f), Color4.Yellow)
-							};
-
-			RenderObjects.Add(new RenderObject(vertices));
+			Triangle = new Triangle
+						{
+							PointA = new PointF(-.25f, .25f),
+							PointB = new PointF(0f, -.25f),
+							PointC = new PointF(0.25f, 0.25f),
+							Color = Color.Purple
+						};
+			
+			Triangle.Initialize();
 
 			CursorVisible = true;
 			VSync = VSyncMode.Off;
@@ -84,7 +117,7 @@ namespace TestingGame
 
 			GL.UseProgram(shaderProgram);
 
-			foreach (var renderObject in RenderObjects) renderObject.Render();
+			Triangle.Render();
 
 			SwapBuffers();
 		}
