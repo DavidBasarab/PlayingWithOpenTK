@@ -10,7 +10,57 @@ using OpenTK.Input;
 
 namespace TestingGame
 {
-	//http://dreamstatecoding.blogspot.com/2017/02/opengl-4-with-opentk-in-c-part-5.html
+	public class ShapeFactory
+	{
+		public static List<Vertex> CreateSolidCube(float side, Color4 color)
+		{
+			side = side / 2f; // half side - and other half
+
+			var vertices = new List<Vertex>
+							{
+								new Vertex(new Vector4(-side, -side, -side, 1.0f), color),
+								new Vertex(new Vector4(-side, -side, side, 1.0f), color),
+								new Vertex(new Vector4(-side, side, -side, 1.0f), color),
+								new Vertex(new Vector4(-side, side, -side, 1.0f), color),
+								new Vertex(new Vector4(-side, -side, side, 1.0f), color),
+								new Vertex(new Vector4(-side, side, side, 1.0f), color),
+								new Vertex(new Vector4(side, -side, -side, 1.0f), color),
+								new Vertex(new Vector4(side, side, -side, 1.0f), color),
+								new Vertex(new Vector4(side, -side, side, 1.0f), color),
+								new Vertex(new Vector4(side, -side, side, 1.0f), color),
+								new Vertex(new Vector4(side, side, -side, 1.0f), color),
+								new Vertex(new Vector4(side, side, side, 1.0f), color),
+								new Vertex(new Vector4(-side, -side, -side, 1.0f), color),
+								new Vertex(new Vector4(side, -side, -side, 1.0f), color),
+								new Vertex(new Vector4(-side, -side, side, 1.0f), color),
+								new Vertex(new Vector4(-side, -side, side, 1.0f), color),
+								new Vertex(new Vector4(side, -side, -side, 1.0f), color),
+								new Vertex(new Vector4(side, -side, side, 1.0f), color),
+								new Vertex(new Vector4(-side, side, -side, 1.0f), color),
+								new Vertex(new Vector4(-side, side, side, 1.0f), color),
+								new Vertex(new Vector4(side, side, -side, 1.0f), color),
+								new Vertex(new Vector4(side, side, -side, 1.0f), color),
+								new Vertex(new Vector4(-side, side, side, 1.0f), color),
+								new Vertex(new Vector4(side, side, side, 1.0f), color),
+								new Vertex(new Vector4(-side, -side, -side, 1.0f), color),
+								new Vertex(new Vector4(-side, side, -side, 1.0f), color),
+								new Vertex(new Vector4(side, -side, -side, 1.0f), color),
+								new Vertex(new Vector4(side, -side, -side, 1.0f), color),
+								new Vertex(new Vector4(-side, side, -side, 1.0f), color),
+								new Vertex(new Vector4(side, side, -side, 1.0f), color),
+								new Vertex(new Vector4(-side, -side, side, 1.0f), color),
+								new Vertex(new Vector4(side, -side, side, 1.0f), color),
+								new Vertex(new Vector4(-side, side, side, 1.0f), color),
+								new Vertex(new Vector4(-side, side, side, 1.0f), color),
+								new Vertex(new Vector4(side, -side, side, 1.0f), color),
+								new Vertex(new Vector4(side, side, side, 1.0f), color)
+							};
+
+			return vertices;
+		}
+	}
+
+	//http://dreamstatecoding.blogspot.com/2017/02/opengl-4-with-opentk-in-c-part-6.html
 	public class MainWindow : GameWindow
 	{
 		private int shaderProgram;
@@ -32,6 +82,8 @@ namespace TestingGame
 		}
 
 		private double GameTime { get; set; }
+
+		private List<RenderObject> RenderObjects { get; } = new List<RenderObject>();
 
 		private List<Triangle> Triangles { get; } = new List<Triangle>();
 
@@ -58,7 +110,10 @@ namespace TestingGame
 		{
 			Console.WriteLine("On Load");
 
-			CreateTriangles();
+			//CreateTriangles();
+			var cubeVertices = ShapeFactory.CreateSolidCube(0.2f, Color4.Red);
+
+			RenderObjects.Add(new RenderObject(cubeVertices));
 
 			CursorVisible = true;
 			VSync = VSyncMode.Off;
@@ -85,6 +140,8 @@ namespace TestingGame
 			GL.UseProgram(shaderProgram);
 
 			foreach (var triangle in Triangles) triangle.Render();
+
+			foreach (var renderObject in RenderObjects) renderObject.Render();
 
 			SwapBuffers();
 		}
@@ -130,29 +187,29 @@ namespace TestingGame
 		private void CreateTriangles()
 		{
 			var triangle = new Triangle
-								{
-									PointA = new PointF(-0.5f, 0.0f),
-									PointB = new PointF(-1f, -1f),
-									PointC = new PointF(0f, -1f),
-									Color = Color.Purple
-								};
+							{
+								PointA = new PointF(-0.5f, 0.0f),
+								PointB = new PointF(-1f, -1f),
+								PointC = new PointF(0f, -1f),
+								Color = Color.Purple
+							};
 
 			triangle.Initialize();
 
 			Triangles.Add(triangle);
 
 			triangle = new Triangle
-								{
-									PointA = new PointF(-0.5f, 0.0f),
-									PointB = new PointF(-1f, 1f),
-									PointC = new PointF(0f, 1f),
-									Color = Color.HotPink
-								};
+						{
+							PointA = new PointF(-0.5f, 0.0f),
+							PointB = new PointF(-1f, 1f),
+							PointC = new PointF(0f, 1f),
+							Color = Color.HotPink
+						};
 
 			triangle.Initialize();
 
 			Triangles.Add(triangle);
-			
+
 			triangle = new Triangle
 						{
 							PointA = new PointF(1.0f, 0.5f),
@@ -164,7 +221,7 @@ namespace TestingGame
 			triangle.Initialize();
 
 			Triangles.Add(triangle);
-			
+
 			triangle = new Triangle
 						{
 							PointA = new PointF(1.0f, -0.5f),
