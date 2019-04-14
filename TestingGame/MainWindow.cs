@@ -8,6 +8,20 @@ using OpenTK.Input;
 
 namespace TestingGame
 {
+	public struct Vertex
+	{
+		public const int Size = (4 + 4) * 4;
+
+		private readonly Vector4 position;
+		private readonly Color4 color;
+
+		public Vertex(Vector4 position, Color4 color)
+		{
+			this.position = position;
+			this.color = color;
+		}
+	}
+
 	public class MainWindow : GameWindow
 	{
 		private int shaderProgram;
@@ -74,7 +88,7 @@ namespace TestingGame
 							Z = 0.0f,
 							W = 1.0f
 						});
-			
+
 			DrawRectangle(new Vector4
 						{
 							X = .4f + (float)Math.Sin(GameTime) * 0.25f,
