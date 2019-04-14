@@ -67,22 +67,21 @@ namespace TestingGame
 			GL.ClearColor(backColor);
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
-			GL.UseProgram(shaderProgram);
-
-			GL.DrawArrays(PrimitiveType.Points, 0, 1);
-			GL.PointSize(55);
-
-			GL.VertexAttrib1(0, GameTime);
-
-			var position = new Vector4
-							{
-								X = (float)Math.Sin(GameTime) * 0.5f,
-								Y = (float)Math.Cos(GameTime) * 0.5f,
-								Z = 0.0f,
-								W = 1.0f
-							};
-
-			GL.VertexAttrib4(1, position);
+			DrawRectangle(new Vector4
+						{
+							X = .1f + (float)Math.Sin(GameTime) * 0.5f,
+							Y = .1f + (float)Math.Cos(GameTime) * 0.5f,
+							Z = 0.0f,
+							W = 1.0f
+						});
+			
+			DrawRectangle(new Vector4
+						{
+							X = .4f + (float)Math.Sin(GameTime) * 0.25f,
+							Y = .6f + (float)Math.Cos(GameTime) * 0.25f,
+							Z = 0.0f,
+							W = 1.0f
+						});
 
 			SwapBuffers();
 		}
@@ -123,6 +122,18 @@ namespace TestingGame
 			GL.DeleteShader(fragmentShader);
 
 			return program;
+		}
+
+		private void DrawRectangle(Vector4 position)
+		{
+			GL.UseProgram(shaderProgram);
+
+			GL.DrawArrays(PrimitiveType.Points, 0, 1);
+			GL.PointSize(55);
+
+			GL.VertexAttrib1(0, GameTime);
+
+			GL.VertexAttrib4(1, position);
 		}
 
 		private void HandleKeyboard()
