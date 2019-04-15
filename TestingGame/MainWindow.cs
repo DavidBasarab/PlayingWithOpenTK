@@ -35,7 +35,10 @@ namespace TestingGame
 
 		private double GameTime { get; set; }
 
-		private List<RenderObject> RenderObjects { get; } = new List<RenderObject>();
+		//private List<RenderObject> RenderObjects { get; } = new List<RenderObject>();
+		private RenderObject ShadedCube { get; set; }
+
+		private RenderObject CubeLines { get; set; }
 
 		private List<Triangle> Triangles { get; } = new List<Triangle>();
 
@@ -65,7 +68,8 @@ namespace TestingGame
 			CreateTriangles();
 			var cubeVertices = ShapeFactory.CreateSolidCube(1.0f, Color4.Red);
 
-			RenderObjects.Add(new RenderObject(cubeVertices));
+			ShadedCube = new RenderObject(cubeVertices);
+			CubeLines = new RenderObject(ShapeFactory.CreateCubeLines(1.0f));
 
 			CursorVisible = true;
 			VSync = VSyncMode.Off;
@@ -91,14 +95,20 @@ namespace TestingGame
 
 			RenderTriangles();
 
-			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
+			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
 			
 			modelShaderProgram.Use();
 			
 			// 20 is the location in the shader
 			GL.UniformMatrix4(20, false, ref modelView);
 
-			foreach (var renderObject in RenderObjects) renderObject.Render();
+			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+			
+			ShadedCube.Render();
+			
+			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
+			
+			CubeLines.Render();
 
 			SwapBuffers();
 		}
