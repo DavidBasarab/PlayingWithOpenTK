@@ -10,6 +10,7 @@ namespace TestingGame
 	public class Cube : IDisposable
 	{
 		private readonly PointF centerPoint;
+		private readonly float side;
 		private readonly RenderObject faces;
 		private readonly RenderObject lines;
 		private Matrix4 modelView;
@@ -17,6 +18,7 @@ namespace TestingGame
 		public Cube(PointF centerPoint, float side, Color4 color)
 		{
 			this.centerPoint = centerPoint;
+			this.side = side;
 			lines = new RenderObject(CreateCubeLines(centerPoint, side));
 			faces = new RenderObject(CreateSolidCube(centerPoint, side, color));
 
@@ -55,7 +57,7 @@ namespace TestingGame
 			
 			var rotationZ = Matrix4.CreateRotationZ(k * 1.5f);
 
-			modelView = Matrix4.Identity;
+			modelView = Matrix4.CreateTranslation(centerPoint.X, centerPoint.Y, side / 2f);
 			modelView *= rotationX;
 			modelView *= rotationY;
 			modelView *= rotationZ;
