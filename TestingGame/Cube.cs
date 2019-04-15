@@ -9,12 +9,14 @@ namespace TestingGame
 {
 	public class Cube : IDisposable
 	{
+		private readonly PointF centerPoint;
 		private readonly RenderObject faces;
 		private readonly RenderObject lines;
 		private Matrix4 modelView;
 
 		public Cube(PointF centerPoint, float side, Color4 color)
 		{
+			this.centerPoint = centerPoint;
 			lines = new RenderObject(CreateCubeLines(centerPoint, side));
 			faces = new RenderObject(CreateSolidCube(centerPoint, side, color));
 		}
