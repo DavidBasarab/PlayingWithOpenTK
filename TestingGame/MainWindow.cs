@@ -64,7 +64,8 @@ namespace TestingGame
 
 			CreateTriangles();
 
-			Cubes.Add(new Cube(1.0f, Color4.Tan));
+			Cubes.Add(new Cube(new PointF(0, 0), 1.0f, Color4.Tan));
+
 			// Cubes.Add(new Cube(.2f, Color4.HotPink));
 
 			CursorVisible = true;
