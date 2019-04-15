@@ -19,7 +19,7 @@ namespace TestingGame
 			this.centerPoint = centerPoint;
 			lines = new RenderObject(CreateCubeLines(centerPoint, side));
 			faces = new RenderObject(CreateSolidCube(centerPoint, side, color));
-			
+
 			modelView = Matrix4.Identity;
 		}
 
@@ -47,13 +47,18 @@ namespace TestingGame
 
 		public void Update(double gameTime)
 		{
-			// var k = (float)gameTime * 0.05f;
-			//
-			// var r1 = Matrix4.CreateRotationX(k * 6.0f);
-			// var r2 = Matrix4.CreateRotationY(k * 6.0f);
-			// var r3 = Matrix4.CreateRotationZ(k * 1.5f);
-			//
-			// modelView = r1 * r2 * r3;
+			var k = (float)gameTime * 0.05f;
+
+			var rotationX = Matrix4.CreateRotationX(k * 6.0f);
+			
+			var rotationY = Matrix4.CreateRotationY(k * 6.0f);
+			
+			var rotationZ = Matrix4.CreateRotationZ(k * 1.5f);
+
+			modelView = Matrix4.Identity;
+			modelView *= rotationX;
+			modelView *= rotationY;
+			modelView *= rotationZ;
 		}
 
 		private static List<Vertex> CreateCubeLines(PointF centerPoint, float side)
