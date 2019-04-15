@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using OpenTK;
 using OpenTK.Graphics;
@@ -79,10 +80,10 @@ namespace TestingGame
 
 			CreateTriangles();
 
-			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
-			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Yellow));
-			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
-			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Yellow));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
 			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Blue));
 			//
 			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
@@ -130,6 +131,34 @@ namespace TestingGame
 
 			RenderTriangles();
 
+			var cube = Cubes.FirstOrDefault();
+			
+			// var translation = Matrix4.CreateTranslation((float)(Math.Sin(k * 5f) * (count + 0.5f)),
+			// 											(float)(Math.Cos(k * 5f) * (count + 0.5f)),
+			// 											-2.7f);
+
+			var translation = Matrix4.CreateTranslation(0, 0, -.51f);
+
+			// var rotations = new Vector4
+			// 				{
+			// 					X = k * 13.0f + i,
+			// 					Y = k * 13.0f + i,
+			// 					Z = k * 3.0f  + i
+			// 				};
+			
+			var rotations = Vector4.Zero;
+
+			cube.Render(projectionMatrix, translation, rotations);
+
+			//PineWheelCubes();
+
+			GL.PointSize(10);
+
+			SwapBuffers();
+		}
+
+		private void PineWheelCubes()
+		{
 			var count = 0.0f;
 
 			foreach (var cube in Cubes)
@@ -154,10 +183,6 @@ namespace TestingGame
 
 				count += 0.3f;
 			}
-
-			GL.PointSize(10);
-
-			SwapBuffers();
 		}
 
 		protected override void OnResize(EventArgs e)
@@ -183,7 +208,11 @@ namespace TestingGame
 			ModelShaderProgram.Initialize();
 		}
 
-		private void CreateProjection() => projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(60 * (float)Math.PI / 180f, AspectRatio, 0.1f, 4000f);
+		private void CreateProjection()
+		{
+			projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(60 * (float)Math.PI / 180f, AspectRatio, .001f, 4000f);
+			//projectionMatrix = Matrix4.CreatePerspectiveOffCenter(0, DefaultWidth, DefaultHeight, 0, 1f, 4000f);
+		}
 
 		private void CreateTriangles()
 		{
