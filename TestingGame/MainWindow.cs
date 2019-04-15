@@ -155,7 +155,9 @@ namespace TestingGame
 
 			
 
-			rotations.Y = k;
+			// rotations.X = k;
+			// rotations.Y = k;
+			rotations.Z = k;
 
 			cube.Render(projectionMatrix, translation, rotations);
 
