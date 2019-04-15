@@ -74,8 +74,7 @@ namespace DreamStateDemo
 			{
 				renderObject.Bind();
 
-				int i = 0;
-				//for (var i = 0; i < 5; i++)
+				for (var i = 0; i < 5; i++)
 				{
 					var k = i + (float)(_time * (0.05f + 0.1 * c));
 
