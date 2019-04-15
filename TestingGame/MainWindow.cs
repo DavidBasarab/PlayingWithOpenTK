@@ -13,6 +13,16 @@ namespace TestingGame
 	//http://dreamstatecoding.blogspot.com/2017/02/opengl-4-with-opentk-in-c-part-7.html
 	public class MainWindow : GameWindow
 	{
+		public static float AspectRation
+		{
+			get
+			{
+				return 
+			}
+		}
+
+		private const int DefaultWidth = 1280; 
+		
 		private ShaderProgram fillShaderProgram;
 
 		private bool stopped;

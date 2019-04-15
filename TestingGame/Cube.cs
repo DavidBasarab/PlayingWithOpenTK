@@ -30,6 +30,11 @@ namespace TestingGame
 			lines.Dispose();
 			faces.Dispose();
 		}
+		
+		private void CreateProjection()
+		{
+			var aspectRation = (float)
+		}
 
 		public void Render()
 		{
