@@ -14,9 +14,7 @@ namespace TestingGame
 	public class MainWindow : GameWindow
 	{
 		private ShaderProgram fillShaderProgram;
-		private ShaderProgram modelShaderProgram;
 
-		private Matrix4 modelView;
 		private bool stopped;
 
 		private List<Cube> Cubes { get; } = new List<Cube>();
@@ -53,7 +51,7 @@ namespace TestingGame
 			foreach (var triangle in Triangles) triangle.Dispose();
 
 			fillShaderProgram.Dispose();
-			modelShaderProgram.Dispose();
+			ModelShaderProgram.Dispose();
 
 			foreach (var cube in Cubes) cube.Dispose();
 
@@ -92,13 +90,6 @@ namespace TestingGame
 
 			RenderTriangles();
 
-			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
-
-			modelShaderProgram.Use();
-
-			// 20 is the location in the shader
-			GL.UniformMatrix4(20, false, ref modelView);
-
 			foreach (var cube in Cubes) cube.Render();
 
 			SwapBuffers();
@@ -110,13 +101,7 @@ namespace TestingGame
 		{
 			GameTime += e.Time;
 
-			var k = (float)GameTime * 0.05f;
-
-			var r1 = Matrix4.CreateRotationX(k * 6.0f);
-			var r2 = Matrix4.CreateRotationY(k * 6.0f);
-			var r3 = Matrix4.CreateRotationZ(k * 1.5f);
-
-			modelView = r1 * r2 * r3;
+			foreach (var cube in Cubes) cube.Update(GameTime);
 
 			HandleKeyboard();
 		}
@@ -124,7 +109,8 @@ namespace TestingGame
 		private void CompileShaders()
 		{
 			fillShaderProgram = new ShaderProgram(Path.Combine(ExecutingDirectory, @"Shaders\fillVertexShader.vert"), Path.Combine(ExecutingDirectory, @"Shaders\fragmentShader.frag"));
-			modelShaderProgram = new ShaderProgram(Path.Combine(ExecutingDirectory, @"Shaders\ModelVertexShader.vert"), Path.Combine(ExecutingDirectory, @"Shaders\fragmentShader.frag"));
+
+			ModelShaderProgram.Initialize();
 		}
 
 		private void CreateTriangles()

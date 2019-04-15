@@ -1,9 +1,37 @@
 using System;
 using System.IO;
+using System.Reflection;
 using OpenTK.Graphics.OpenGL4;
 
 namespace TestingGame
 {
+	public static class ModelShaderProgram
+	{
+		private static readonly Lazy<ShaderProgram> instance = new Lazy<ShaderProgram>(() => new ShaderProgram(Path.Combine(ExecutingDirectory, @"Shaders\ModelVertexShader.vert"), Path.Combine(ExecutingDirectory, @"Shaders\fragmentShader.frag")));
+
+		private static ShaderProgram Instance => instance.Value;
+
+		private static string ExecutingDirectory
+		{
+			get
+			{
+				var codeBase = Assembly.GetExecutingAssembly().CodeBase;
+
+				var uri = new UriBuilder(codeBase);
+
+				var path = Uri.UnescapeDataString(uri.Path);
+
+				return Path.GetDirectoryName(path);
+			}
+		}
+
+		public static void Dispose() => Instance.Dispose();
+
+		public static void Initialize() => Instance.Initialize();
+
+		public static void Use() => Instance.Use();
+	}
+
 	public class ShaderProgram : IDisposable
 	{
 		private readonly string fragmentShaderPath;
@@ -27,8 +55,13 @@ namespace TestingGame
 			if (programId == -77) return;
 
 			Console.WriteLine($"Disposing of Program <{programId}>");
-				
+
 			GL.DeleteProgram(programId);
+		}
+
+		public void Initialize()
+		{
+			// Do nothing
 		}
 
 		public void Use() => GL.UseProgram(programId);

@@ -1,40 +1,9 @@
-using System;
 using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL4;
 
 namespace TestingGame
 {
-	public class Cube : IDisposable
-	{
-		private readonly RenderObject faces;
-		private readonly RenderObject lines;
-
-		public Cube(float side, Color4 color)
-		{
-			lines = new RenderObject(ShapeFactory.CreateCubeLines(side));
-			faces = new RenderObject(ShapeFactory.CreateSolidCube(side, color));
-		}
-
-		public void Dispose()
-		{
-			lines.Dispose();
-			faces.Dispose();
-		}
-
-		public void Render()
-		{
-			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
-
-			faces.Render();
-
-			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
-
-			lines.Render();
-		}
-	}
-
 	public class ShapeFactory
 	{
 		public static List<Vertex> CreateCubeLines(float side)
