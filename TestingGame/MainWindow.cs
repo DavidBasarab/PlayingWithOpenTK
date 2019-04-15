@@ -24,6 +24,7 @@ namespace TestingGame
 		private Matrix4 projectionMatrix;
 
 		private bool stopped;
+		private Vector4 rotations;
 
 		public float AspectRatio => (float)Width / Height;
 
@@ -85,6 +86,7 @@ namespace TestingGame
 			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
 			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
 			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Blue));
+
 			//
 			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
 			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Yellow));
@@ -105,6 +107,8 @@ namespace TestingGame
 			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Blue));
 
 			// Cubes.Add(new Cube(.2f, Color4.HotPink));
+			
+			rotations = Vector4.Zero;
 
 			CursorVisible = true;
 			VSync = VSyncMode.Off;
@@ -132,10 +136,13 @@ namespace TestingGame
 			RenderTriangles();
 
 			var cube = Cubes.FirstOrDefault();
-			
+
 			// var translation = Matrix4.CreateTranslation((float)(Math.Sin(k * 5f) * (count + 0.5f)),
 			// 											(float)(Math.Cos(k * 5f) * (count + 0.5f)),
 			// 											-2.7f);
+
+			// var k = (float)Math.Sin((float)(GameTime * .5f));
+			var k = (float)(GameTime * .5f);
 
 			var translation = Matrix4.CreateTranslation(0, 0, -.51f);
 
@@ -145,8 +152,10 @@ namespace TestingGame
 			// 					Y = k * 13.0f + i,
 			// 					Z = k * 3.0f  + i
 			// 				};
+
 			
-			var rotations = Vector4.Zero;
+
+			rotations.Y = k;
 
 			cube.Render(projectionMatrix, translation, rotations);
 
@@ -155,34 +164,6 @@ namespace TestingGame
 			GL.PointSize(10);
 
 			SwapBuffers();
-		}
-
-		private void PineWheelCubes()
-		{
-			var count = 0.0f;
-
-			foreach (var cube in Cubes)
-			{
-				for (var i = 0; i < 5; i++)
-				{
-					var k = i + (float)(GameTime * (.05f + .1 * count));
-
-					var translation = Matrix4.CreateTranslation((float)(Math.Sin(k * 5f) * (count + 0.5f)),
-																(float)(Math.Cos(k * 5f) * (count + 0.5f)),
-																-2.7f);
-
-					var rotations = new Vector4
-									{
-										X = k * 13.0f + i,
-										Y = k * 13.0f + i,
-										Z = k * 3.0f  + i
-									};
-
-					cube.Render(projectionMatrix, translation, rotations);
-				}
-
-				count += 0.3f;
-			}
 		}
 
 		protected override void OnResize(EventArgs e)
@@ -211,6 +192,7 @@ namespace TestingGame
 		private void CreateProjection()
 		{
 			projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(60 * (float)Math.PI / 180f, AspectRatio, .001f, 4000f);
+
 			//projectionMatrix = Matrix4.CreatePerspectiveOffCenter(0, DefaultWidth, DefaultHeight, 0, 1f, 4000f);
 		}
 
@@ -278,6 +260,34 @@ namespace TestingGame
 		}
 
 		private void OnClosed(object sender, EventArgs e) => Exit();
+
+		private void PineWheelCubes()
+		{
+			var count = 0.0f;
+
+			foreach (var cube in Cubes)
+			{
+				for (var i = 0; i < 5; i++)
+				{
+					var k = i + (float)(GameTime * (.05f + .1 * count));
+
+					var translation = Matrix4.CreateTranslation((float)(Math.Sin(k * 5f) * (count + 0.5f)),
+																(float)(Math.Cos(k * 5f) * (count + 0.5f)),
+																-2.7f);
+
+					var rotations = new Vector4
+									{
+										X = k * 13.0f + i,
+										Y = k * 13.0f + i,
+										Z = k * 3.0f  + i
+									};
+
+					cube.Render(projectionMatrix, translation, rotations);
+				}
+
+				count += 0.3f;
+			}
+		}
 
 		private void RenderTriangles()
 		{
