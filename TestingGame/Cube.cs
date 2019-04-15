@@ -31,7 +31,7 @@ namespace TestingGame
 			faces.Dispose();
 		}
 
-		public void Render(float gameTime, Matrix4 projectionMatrix, float someNumber)
+		public void Render(Matrix4 projectionMatrix, Matrix4 translation, Vector4 rotations)
 		{
 			// ModelShaderProgram.Use();
 			ProjectionProgram.Use();
@@ -42,23 +42,14 @@ namespace TestingGame
 			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
 
 			faces.Bind();
+			
+			var rotationX = Matrix4.CreateRotationX(rotations.X);
+			var rotationY = Matrix4.CreateRotationY(rotations.Y);
+			var rotationZ = Matrix4.CreateRotationZ(rotations.Z);
 
-			for (var i = 0; i < 5; i++)
-			{
-				var k = i + (float)(gameTime * (.05f + .1 * someNumber));
+			modelView = rotationX * rotationY * rotationZ * translation;
 
-				var t2 = Matrix4.CreateTranslation((float)(Math.Sin(k  * 5f) * (someNumber + 0.5f)),
-													(float)(Math.Cos(k * 5f) * (someNumber + 0.5f)),
-													-2.7f);
-
-				var r1 = Matrix4.CreateRotationX(k * 13.0f + i);
-				var r2 = Matrix4.CreateRotationY(k * 13.0f + i);
-				var r3 = Matrix4.CreateRotationZ(k * 3.0f  + i);
-
-				modelView = r1 * r2 * r3 * t2;
-
-				GL.UniformMatrix4(21, false, ref modelView);
-			}
+			GL.UniformMatrix4(21, false, ref modelView);
 
 			faces.Render();
 

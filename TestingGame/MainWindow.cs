@@ -23,7 +23,6 @@ namespace TestingGame
 		private Matrix4 projectionMatrix;
 
 		private bool stopped;
-		private float someNumber;
 
 		public float AspectRatio => (float)Width / Height;
 
@@ -46,7 +45,7 @@ namespace TestingGame
 		private double GameTime { get; set; }
 
 		private List<Triangle> Triangles { get; } = new List<Triangle>();
-		
+
 		public MainWindow()
 			: base(DefaultWidth, DefaultHeight, GraphicsMode.Default, "TestingGame", GameWindowFlags.Default, DisplayDevice.Default, 4, 5, GraphicsContextFlags.ForwardCompatible) => Title += $": OpenGL Version: {GL.GetString(StringName.Version)}";
 
@@ -85,24 +84,24 @@ namespace TestingGame
 			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
 			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
 			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Blue));
-			
-			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
-			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Yellow));
-			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
-			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
-			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Blue));
-			
-			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
-			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Yellow));
-			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
-			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
-			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Blue));
-			
-			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
-			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Yellow));
-			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
-			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
-			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Blue));
+			//
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Yellow));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Blue));
+			//
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Yellow));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Blue));
+			//
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Yellow));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Blue));
 
 			// Cubes.Add(new Cube(.2f, Color4.HotPink));
 
@@ -131,26 +130,40 @@ namespace TestingGame
 
 			RenderTriangles();
 
-			someNumber = 0.0f;
-			
-			var random = new Random();
+			var count = 0.0f;
 
 			foreach (var cube in Cubes)
 			{
-				cube.Render((float)GameTime, projectionMatrix, someNumber);
+				for (var i = 0; i < 5; i++)
+				{
+					var k = i + (float)(GameTime * (.05f + .1 * count));
 
-				someNumber += 0.1f;
+					var translation = Matrix4.CreateTranslation((float)(Math.Sin(k * 5f) * (count + 0.5f)),
+																(float)(Math.Cos(k * 5f) * (count + 0.5f)),
+																-2.7f);
+
+					var rotations = new Vector4
+									{
+										X = k * 13.0f + i,
+										Y = k * 13.0f + i,
+										Z = k * 3.0f  + i
+									};
+
+					cube.Render(projectionMatrix, translation, rotations);
+				}
+
+				count += 0.3f;
 			}
 
 			GL.PointSize(10);
-			
+
 			SwapBuffers();
 		}
 
 		protected override void OnResize(EventArgs e)
 		{
 			GL.Viewport(0, 0, Width, Height);
-			
+
 			CreateProjection();
 		}
 
