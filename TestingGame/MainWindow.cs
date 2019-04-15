@@ -10,19 +10,16 @@ using OpenTK.Input;
 
 namespace TestingGame
 {
-	//http://dreamstatecoding.blogspot.com/2017/02/opengl-4-with-opentk-in-c-part-7.html
+	//http://dreamstatecoding.blogspot.com/2017/02/opengl-4-with-opentk-in-c-part-8.html
+	//http://www.songho.ca/opengl/gl_projectionmatrix.html
 	public class MainWindow : GameWindow
 	{
-		public static float AspectRation
-		{
-			get
-			{
-				return 
-			}
-		}
+		private const int DefaultHeight = 720;
 
-		private const int DefaultWidth = 1280; 
-		
+		private const int DefaultWidth = 1280;
+
+		public static float AspectRatio => (float)DefaultWidth / DefaultHeight;
+
 		private ShaderProgram fillShaderProgram;
 
 		private bool stopped;
@@ -48,7 +45,7 @@ namespace TestingGame
 		private List<Triangle> Triangles { get; } = new List<Triangle>();
 
 		public MainWindow()
-			: base(1280, 720, GraphicsMode.Default, "TestingGame", GameWindowFlags.Default, DisplayDevice.Default, 4, 5, GraphicsContextFlags.ForwardCompatible) => Title += $": OpenGL Version: {GL.GetString(StringName.Version)}";
+			: base(DefaultWidth, DefaultHeight, GraphicsMode.Default, "TestingGame", GameWindowFlags.Default, DisplayDevice.Default, 4, 5, GraphicsContextFlags.ForwardCompatible) => Title += $": OpenGL Version: {GL.GetString(StringName.Version)}";
 
 		public override void Exit()
 		{
@@ -72,7 +69,7 @@ namespace TestingGame
 		protected override void OnLoad(EventArgs e)
 		{
 			Console.WriteLine("On Load");
-			
+
 			ModelShaderProgram.Initialize();
 			ProjectionProgram.Initialize();
 
@@ -80,7 +77,7 @@ namespace TestingGame
 
 			Cubes.Add(new Cube(new PointF(-0.5f, 0f), 0.25f, Color4.Tan));
 			Cubes.Add(new Cube(new PointF(-0.25f, 0.25f), 0.25f, Color4.Yellow));
-			
+
 			Cubes.Add(new Cube(new PointF(-0.5f, -0.5f), 0.25f, Color4.Ivory));
 
 			// Cubes.Add(new Cube(.2f, Color4.HotPink));

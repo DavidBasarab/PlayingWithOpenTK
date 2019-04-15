@@ -33,7 +33,7 @@ namespace TestingGame
 		
 		private void CreateProjection()
 		{
-			var aspectRation = (float)
+			var aspectRation = MainWindow.AspectRatio;
 		}
 
 		public void Render()
