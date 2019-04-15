@@ -141,13 +141,13 @@ namespace TestingGame
 			// var k = (float)Math.Sin((float)(GameTime * .5f));
 			var k = (float)(GameTime * .5f);
 
-			var translation = Matrix4.CreateTranslation(0, 0, -.51f);
+			var translation = Matrix4.CreateTranslation(.25f, 0, -.51f);
 
 			var rotations = Vector4.Zero;
 
-			rotations.X = k;
-			rotations.Y = k;
-			rotations.Z = k;
+			// rotations.X = k;
+			// rotations.Y = k;
+			// rotations.Z = k;
 
 			cube.Render(projectionMatrix, translation, rotations);
 
