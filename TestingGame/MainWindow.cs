@@ -19,6 +19,8 @@ namespace TestingGame
 		private Matrix4 modelView;
 		private bool stopped;
 
+		private List<Cube> Cubes { get; } = new List<Cube>();
+
 		private string ExecutingDirectory
 		{
 			get
@@ -34,11 +36,6 @@ namespace TestingGame
 		}
 
 		private double GameTime { get; set; }
-
-		//private List<RenderObject> RenderObjects { get; } = new List<RenderObject>();
-		private RenderObject ShadedCube { get; set; }
-
-		private RenderObject CubeLines { get; set; }
 
 		private List<Triangle> Triangles { get; } = new List<Triangle>();
 
@@ -58,6 +55,8 @@ namespace TestingGame
 			fillShaderProgram.Dispose();
 			modelShaderProgram.Dispose();
 
+			foreach (var cube in Cubes) cube.Dispose();
+
 			base.Exit();
 		}
 
@@ -66,10 +65,8 @@ namespace TestingGame
 			Console.WriteLine("On Load");
 
 			CreateTriangles();
-			var cubeVertices = ShapeFactory.CreateSolidCube(1.0f, Color4.Red);
 
-			ShadedCube = new RenderObject(cubeVertices);
-			CubeLines = new RenderObject(ShapeFactory.CreateCubeLines(1.0f));
+			Cubes.Add(new Cube(1.0f, Color4.Tan));
 
 			CursorVisible = true;
 			VSync = VSyncMode.Off;
@@ -96,19 +93,13 @@ namespace TestingGame
 			RenderTriangles();
 
 			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
-			
+
 			modelShaderProgram.Use();
-			
+
 			// 20 is the location in the shader
 			GL.UniformMatrix4(20, false, ref modelView);
 
-			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
-			
-			ShadedCube.Render();
-			
-			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
-			
-			CubeLines.Render();
+			foreach (var cube in Cubes) cube.Render();
 
 			SwapBuffers();
 		}
