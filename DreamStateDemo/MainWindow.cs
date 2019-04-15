@@ -74,12 +74,12 @@ namespace DreamStateDemo
 			{
 				renderObject.Bind();
 
-				for (var i = 0; i < 5; i++)
+				int i = 0;
+				//for (var i = 0; i < 5; i++)
 				{
 					var k = i + (float)(_time * (0.05f + 0.1 * c));
 
-					var t2 = Matrix4.CreateTranslation(
-														(float)(Math.Sin(k * 5f) * (c + 0.5f)),
+					var t2 = Matrix4.CreateTranslation((float)(Math.Sin(k * 5f) * (c + 0.5f)),
 														(float)(Math.Cos(k * 5f) * (c + 0.5f)),
 														_z);
 
@@ -124,8 +124,8 @@ namespace DreamStateDemo
 
 			var shaders = new List<int>
 						{
-							CompileShader(ShaderType.VertexShader, @"Components\Shaders\1Vert\simplePipeVert.vert"),
-							CompileShader(ShaderType.FragmentShader, @"Components\Shaders\simplePipFrag.frag")
+							CompileShader(ShaderType.VertexShader, @"Shaders\simplePipeVert.vert"),
+							CompileShader(ShaderType.FragmentShader, @"Shaders\simplePipFrag.frag")
 						};
 
 			foreach (var shader in shaders) { GL.AttachShader(program, shader); }
