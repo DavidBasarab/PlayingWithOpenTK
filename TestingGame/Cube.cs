@@ -10,9 +10,9 @@ namespace TestingGame
 	public class Cube : IDisposable
 	{
 		private readonly PointF centerPoint;
-		private readonly float side;
 		private readonly RenderObject faces;
 		private readonly RenderObject lines;
+		private readonly float side;
 		private Matrix4 modelView;
 
 		public Cube(PointF centerPoint, float side, Color4 color)
@@ -30,24 +30,42 @@ namespace TestingGame
 			lines.Dispose();
 			faces.Dispose();
 		}
-		
-		private void CreateProjection()
-		{
-			var aspectRation = MainWindow.AspectRatio;
-		}
 
-		public void Render()
+		public void Render(float gameTime, Matrix4 projectionMatrix, float someNumber)
 		{
-			ModelShaderProgram.Use();
+			// ModelShaderProgram.Use();
+			ProjectionProgram.Use();
 
 			// 20 is the location in the shader
-			GL.UniformMatrix4(20, false, ref modelView);
+			GL.UniformMatrix4(20, false, ref projectionMatrix);
 
 			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+
+			faces.Bind();
+			
+
+			for (var i = 0; i < 5; i++)
+			{
+				var k = i + (float)(gameTime * (.05f + .1 * someNumber));
+				
+				var t2 = Matrix4.CreateTranslation((float)(Math.Sin(k * 5f) * (someNumber + 0.5f)),
+													(float)(Math.Cos(k * 5f) * (someNumber + 0.5f)),
+													-2.7f);
+				
+				var r1 = Matrix4.CreateRotationX(k * 13.0f + i);
+				var r2 = Matrix4.CreateRotationY(k * 13.0f + i);
+				var r3 = Matrix4.CreateRotationZ(k * 3.0f  + i);
+				
+				modelView = r1 * r2 * r3 * t2;
+				
+				GL.UniformMatrix4(21, false, ref modelView);
+			}
 
 			faces.Render();
 
 			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
+			
+			lines.Bind();
 
 			lines.Render();
 		}
@@ -57,9 +75,9 @@ namespace TestingGame
 			var k = (float)gameTime * 0.05f;
 
 			var rotationX = Matrix4.CreateRotationX(k * 6.0f);
-			
+
 			var rotationY = Matrix4.CreateRotationY(k * 6.0f);
-			
+
 			var rotationZ = Matrix4.CreateRotationZ(k * 1.5f);
 
 			modelView = Matrix4.CreateTranslation(centerPoint.X, centerPoint.Y, side / 2f);

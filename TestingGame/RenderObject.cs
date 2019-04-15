@@ -58,17 +58,15 @@ namespace TestingGame
 			initialized = true;
 		}
 
+		public void Bind() => GL.BindVertexArray(vertexArray);
+
 		public void Dispose()
 		{
 			Dispose(true);
 			GC.SuppressFinalize(this);
 		}
 
-		public void Render()
-		{
-			GL.BindVertexArray(vertexArray);
-			GL.DrawArrays(PrimitiveType.Triangles, 0, verticeCount);
-		}
+		public void Render() => GL.DrawArrays(PrimitiveType.Triangles, 0, verticeCount);
 
 		protected virtual void Dispose(bool disposing)
 		{

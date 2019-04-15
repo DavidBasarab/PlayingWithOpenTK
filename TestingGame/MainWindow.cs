@@ -18,11 +18,13 @@ namespace TestingGame
 
 		private const int DefaultWidth = 1280;
 
-		public static float AspectRatio => (float)DefaultWidth / DefaultHeight;
-
 		private ShaderProgram fillShaderProgram;
 
+		private Matrix4 projectionMatrix;
+
 		private bool stopped;
+
+		public float AspectRatio => (float)Width / Height;
 
 		private List<Cube> Cubes { get; } = new List<Cube>();
 
@@ -43,7 +45,7 @@ namespace TestingGame
 		private double GameTime { get; set; }
 
 		private List<Triangle> Triangles { get; } = new List<Triangle>();
-
+		
 		public MainWindow()
 			: base(DefaultWidth, DefaultHeight, GraphicsMode.Default, "TestingGame", GameWindowFlags.Default, DisplayDevice.Default, 4, 5, GraphicsContextFlags.ForwardCompatible) => Title += $": OpenGL Version: {GL.GetString(StringName.Version)}";
 
@@ -70,6 +72,8 @@ namespace TestingGame
 		{
 			Console.WriteLine("On Load");
 
+			CreateProjection();
+
 			ModelShaderProgram.Initialize();
 			ProjectionProgram.Initialize();
 
@@ -89,6 +93,7 @@ namespace TestingGame
 
 			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
 			GL.PatchParameter(PatchParameterInt.PatchVertices, 3);
+			GL.Enable(EnableCap.DepthTest);
 
 			Closed += OnClosed;
 		}
@@ -106,18 +111,32 @@ namespace TestingGame
 
 			RenderTriangles();
 
-			foreach (var cube in Cubes) cube.Render();
+			float c = 0.0f;
 
+			foreach (var cube in Cubes)
+			{
+				cube.Render((float)GameTime, projectionMatrix, c);
+
+				c += 0.3f;
+			}
+
+			GL.PointSize(10);
+			
 			SwapBuffers();
 		}
 
-		protected override void OnResize(EventArgs e) => GL.Viewport(0, 0, Width, Height);
+		protected override void OnResize(EventArgs e)
+		{
+			GL.Viewport(0, 0, Width, Height);
+			
+			CreateProjection();
+		}
 
 		protected override void OnUpdateFrame(FrameEventArgs e)
 		{
 			GameTime += e.Time;
 
-			foreach (var cube in Cubes) cube.Update(GameTime);
+			//foreach (var cube in Cubes) cube.Update(GameTime);
 
 			HandleKeyboard();
 		}
@@ -128,6 +147,8 @@ namespace TestingGame
 
 			ModelShaderProgram.Initialize();
 		}
+
+		private void CreateProjection() => projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(60 * (float)Math.PI / 180f, AspectRatio, 0.1f, 4000f);
 
 		private void CreateTriangles()
 		{
