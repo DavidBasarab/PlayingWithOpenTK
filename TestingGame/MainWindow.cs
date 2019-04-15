@@ -24,7 +24,6 @@ namespace TestingGame
 		private Matrix4 projectionMatrix;
 
 		private bool stopped;
-		private Vector4 rotations;
 
 		public float AspectRatio => (float)Width / Height;
 
@@ -107,8 +106,6 @@ namespace TestingGame
 			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Blue));
 
 			// Cubes.Add(new Cube(.2f, Color4.HotPink));
-			
-			rotations = Vector4.Zero;
 
 			CursorVisible = true;
 			VSync = VSyncMode.Off;
@@ -146,14 +143,7 @@ namespace TestingGame
 
 			var translation = Matrix4.CreateTranslation(0, 0, -.51f);
 
-			// var rotations = new Vector4
-			// 				{
-			// 					X = k * 13.0f + i,
-			// 					Y = k * 13.0f + i,
-			// 					Z = k * 3.0f  + i
-			// 				};
-
-			
+			var rotations = Vector4.Zero;
 
 			rotations.X = k;
 			rotations.Y = k;
