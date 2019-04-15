@@ -52,6 +52,7 @@ namespace TestingGame
 
 			fillShaderProgram.Dispose();
 			ModelShaderProgram.Dispose();
+			ProjectionProgram.Dispose();
 
 			foreach (var cube in Cubes) cube.Dispose();
 
@@ -61,6 +62,9 @@ namespace TestingGame
 		protected override void OnLoad(EventArgs e)
 		{
 			Console.WriteLine("On Load");
+			
+			ModelShaderProgram.Initialize();
+			ProjectionProgram.Initialize();
 
 			CreateTriangles();
 
