@@ -23,6 +23,7 @@ namespace TestingGame
 		private Matrix4 projectionMatrix;
 
 		private bool stopped;
+		private float someNumber;
 
 		public float AspectRatio => (float)Width / Height;
 
@@ -79,10 +80,29 @@ namespace TestingGame
 
 			CreateTriangles();
 
-			Cubes.Add(new Cube(new PointF(-0.5f, 0f), 0.25f, Color4.Tan));
-			Cubes.Add(new Cube(new PointF(-0.25f, 0.25f), 0.25f, Color4.Yellow));
-
-			Cubes.Add(new Cube(new PointF(-0.5f, -0.5f), 0.25f, Color4.Ivory));
+			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
+			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Yellow));
+			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
+			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
+			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Blue));
+			
+			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
+			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Yellow));
+			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
+			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
+			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Blue));
+			
+			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
+			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Yellow));
+			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
+			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
+			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Blue));
+			
+			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
+			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Yellow));
+			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
+			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
+			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Blue));
 
 			// Cubes.Add(new Cube(.2f, Color4.HotPink));
 
@@ -111,13 +131,15 @@ namespace TestingGame
 
 			RenderTriangles();
 
-			float c = 0.0f;
+			someNumber = 0.0f;
+			
+			var random = new Random();
 
 			foreach (var cube in Cubes)
 			{
-				cube.Render((float)GameTime, projectionMatrix, c);
+				cube.Render((float)GameTime, projectionMatrix, someNumber);
 
-				c += 0.3f;
+				someNumber += 0.1f;
 			}
 
 			GL.PointSize(10);
@@ -134,7 +156,7 @@ namespace TestingGame
 
 		protected override void OnUpdateFrame(FrameEventArgs e)
 		{
-			GameTime += e.Time;
+			//GameTime += e.Time;
 
 			//foreach (var cube in Cubes) cube.Update(GameTime);
 

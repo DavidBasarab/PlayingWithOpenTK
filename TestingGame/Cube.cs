@@ -42,29 +42,28 @@ namespace TestingGame
 			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
 
 			faces.Bind();
-			
 
 			for (var i = 0; i < 5; i++)
 			{
 				var k = i + (float)(gameTime * (.05f + .1 * someNumber));
-				
-				var t2 = Matrix4.CreateTranslation((float)(Math.Sin(k * 5f) * (someNumber + 0.5f)),
+
+				var t2 = Matrix4.CreateTranslation((float)(Math.Sin(k  * 5f) * (someNumber + 0.5f)),
 													(float)(Math.Cos(k * 5f) * (someNumber + 0.5f)),
 													-2.7f);
-				
+
 				var r1 = Matrix4.CreateRotationX(k * 13.0f + i);
 				var r2 = Matrix4.CreateRotationY(k * 13.0f + i);
 				var r3 = Matrix4.CreateRotationZ(k * 3.0f  + i);
-				
+
 				modelView = r1 * r2 * r3 * t2;
-				
+
 				GL.UniformMatrix4(21, false, ref modelView);
 			}
 
 			faces.Render();
 
 			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
-			
+
 			lines.Bind();
 
 			lines.Render();
