@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using OpenTK.Graphics.OpenGL4;
+using TestingGame.Common;
 
 namespace TestingGame
 {
@@ -26,7 +27,7 @@ namespace TestingGame
 		{
 			if (programId == -77) return;
 
-			Console.WriteLine($"Disposing of Program <{programId}>");
+			Log.Info($"Disposing of Program <{programId}>");
 
 			GL.DeleteProgram(programId);
 		}
@@ -42,15 +43,15 @@ namespace TestingGame
 		{
 			var vertexShader = GL.CreateShader(ShaderType.VertexShader);
 
-			Console.WriteLine($"Vertex Shader Path := {vertexShaderPath}");
-
+			Log.Debug($"Vertex Shader Path := {vertexShaderPath}");
+			
 			GL.ShaderSource(vertexShader, File.ReadAllText(vertexShaderPath));
 
 			GL.CompileShader(vertexShader);
 
 			var fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
-
-			Console.WriteLine($"Fragment Shader Path := {fragmentShaderPath}");
+			
+			Log.Debug($"Fragment Shader Path := {fragmentShaderPath}");
 
 			GL.ShaderSource(fragmentShader, File.ReadAllText(fragmentShaderPath));
 			GL.CompileShader(fragmentShader);
