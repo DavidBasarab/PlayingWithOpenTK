@@ -87,7 +87,7 @@ namespace TestingGame
 			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Yellow));
 			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
 			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
-			Cubes.Add(new Cube(new Vector3(0, 0, StartingZ), 0.15f, Color4.Blue));
+			Cubes.Add(new Cube(new Vector3(0.25f, 0, StartingZ), 0.15f, Color4.Blue));
 
 			//
 			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
