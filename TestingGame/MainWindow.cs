@@ -84,7 +84,7 @@ namespace TestingGame
 			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Yellow));
 			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
 			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
-			Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Blue));
+			Cubes.Add(new Cube(new PointF(0f, 0f), 0.15f, Color4.Blue));
 
 			//
 			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
@@ -141,12 +141,12 @@ namespace TestingGame
 			// var k = (float)Math.Sin((float)(GameTime * .5f));
 			var k = (float)(GameTime * .5f);
 
-			var translation = Matrix4.CreateTranslation(.25f, 0, -.51f);
+			var translation = Matrix4.CreateTranslation(0f, 0, -0.75f);
 
 			var rotations = Vector4.Zero;
 
-			// rotations.X = k;
-			// rotations.Y = k;
+			//rotations.X = k;
+			rotations.Y = k;
 			// rotations.Z = k;
 
 			cube.Render(projectionMatrix, translation, rotations);
