@@ -11,7 +11,7 @@ using OpenTK.Input;
 
 namespace TestingGame
 {
-	//http://dreamstatecoding.blogspot.com/2017/02/opengl-4-with-opentk-in-c-part-8.html
+	//http://dreamstatecoding.blogspot.com/2017/02/opengl-4-with-opentk-in-c-part-9.html
 	//http://www.songho.ca/opengl/gl_projectionmatrix.html
 	public class MainWindow : GameWindow
 	{
