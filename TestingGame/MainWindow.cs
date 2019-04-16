@@ -9,6 +9,7 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Input;
+using TestingGame.Common;
 
 namespace TestingGame
 {
@@ -60,7 +61,7 @@ namespace TestingGame
 
 			stopped = true;
 
-			Console.WriteLine("Exit called");
+			Log.Info("Exit called");
 
 			foreach (var triangle in Triangles) triangle.Dispose();
 
@@ -75,14 +76,14 @@ namespace TestingGame
 
 		protected override void OnLoad(EventArgs e)
 		{
-			Console.WriteLine("On Load");
+			Log.Info("On load");
 			
 			var item = new TexturedVertex(Vector4.One, Vector2.One);
 
 			var sizeOfStruct = Marshal.SizeOf(item);
 			
-			Console.WriteLine($"Size Struct <{sizeOfStruct}> | TexturedVertex <{TexturedVertex.Size}>");
-
+			Log.Debug($"Size Struct <{sizeOfStruct}> | TexturedVertex <{TexturedVertex.Size}>");
+			
 			CreateProjection();
 
 			ModelShaderProgram.Initialize();
@@ -239,7 +240,7 @@ namespace TestingGame
 		{
 			if (keyState.IsKeyDown(Key.Escape))
 			{
-				Console.WriteLine("Exiting . . . ");
+				Log.Warn("Exiting . . . . ");
 
 				Exit();
 			}
