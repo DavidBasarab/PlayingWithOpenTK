@@ -1,5 +1,6 @@
 using OpenTK;
 using OpenTK.Graphics;
+
 // ReSharper disable NotAccessedField.Local
 
 namespace TestingGame
