@@ -16,8 +16,8 @@ namespace TestingGame
 	public class MainWindow : GameWindow
 	{
 		private const int DefaultHeight = 720;
-
 		private const int DefaultWidth = 1280;
+		
 		private const float StartingZ = -0.75f;
 
 		private float fieldOfView = 60f;
