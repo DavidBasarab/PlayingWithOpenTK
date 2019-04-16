@@ -8,17 +8,21 @@ namespace TestingGame
 {
 	public class Cube : IDisposable
 	{
+		private readonly Vector3 currentPostion;
 		private readonly RenderObject faces;
 		private readonly RenderObject lines;
 		private readonly float side;
-		private readonly Vector3 startingPosition;
 		private Matrix4 modelView;
+		private readonly Vector3 rotation;
 
-		public Cube(Vector3 startingPosition, float side, Color4 color)
+		public Cube(Vector3 currentPostion, float side, Color4 color)
 		{
-			this.startingPosition = startingPosition;
+			this.currentPostion = currentPostion;
+
+			rotation = Vector3.Zero;
 
 			this.side = side;
+
 			lines = new RenderObject(CreateCubeLines(side));
 			faces = new RenderObject(CreateSolidCube(side, color));
 
@@ -31,7 +35,7 @@ namespace TestingGame
 			faces.Dispose();
 		}
 
-		public void Render(Matrix4 projectionMatrix, Matrix4 translation, Vector4 rotations)
+		public void Render(Matrix4 projectionMatrix)
 		{
 			// ModelShaderProgram.Use();
 			ProjectionProgram.Use();
@@ -43,9 +47,11 @@ namespace TestingGame
 
 			faces.Bind();
 
-			var rotationX = Matrix4.CreateRotationX(rotations.X);
-			var rotationY = Matrix4.CreateRotationY(rotations.Y);
-			var rotationZ = Matrix4.CreateRotationZ(rotations.Z);
+			var translation = Matrix4.CreateTranslation(currentPostion);
+
+			var rotationX = Matrix4.CreateRotationX(rotation.X);
+			var rotationY = Matrix4.CreateRotationY(rotation.Y);
+			var rotationZ = Matrix4.CreateRotationZ(rotation.Z);
 
 			modelView = rotationX * rotationY * rotationZ * translation;
 
@@ -60,21 +66,7 @@ namespace TestingGame
 			lines.Render();
 		}
 
-		public void Update(double gameTime)
-		{
-			var k = (float)gameTime * 0.05f;
-
-			var rotationX = Matrix4.CreateRotationX(k * 6.0f);
-
-			var rotationY = Matrix4.CreateRotationY(k * 6.0f);
-
-			var rotationZ = Matrix4.CreateRotationZ(k * 1.5f);
-
-			//modelView = Matrix4.CreateTranslation(centerPoint.X, centerPoint.Y, side / 2f);
-			modelView *= rotationX;
-			modelView *= rotationY;
-			modelView *= rotationZ;
-		}
+		public void Update(double gameTime) { }
 
 		private static List<Vertex> CreateCubeLines(float side)
 		{

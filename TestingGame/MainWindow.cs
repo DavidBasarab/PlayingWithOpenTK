@@ -153,7 +153,7 @@ namespace TestingGame
 
 			// rotations.Z = k;
 
-			cube.Render(projectionMatrix, translation, rotations);
+			cube.Render(projectionMatrix);
 
 			//PineWheelCubes();
 
@@ -317,7 +317,7 @@ namespace TestingGame
 										Z = k * 3.0f  + i
 									};
 
-					cube.Render(projectionMatrix, translation, rotations);
+					cube.Render(projectionMatrix);
 				}
 
 				count += 0.3f;
