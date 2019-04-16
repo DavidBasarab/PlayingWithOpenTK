@@ -280,6 +280,9 @@ namespace TestingGame
 
 			if (keyState.IsKeyDown(Key.Q)) rotations.Y += 0.4f * (float)deltaTime;
 			if (keyState.IsKeyDown(Key.E)) rotations.Y -= 0.4f * (float)deltaTime;
+			
+			if (keyState.IsKeyDown(Key.R)) rotations.X += 0.4f * (float)deltaTime;
+			if (keyState.IsKeyDown(Key.F)) rotations.X -= 0.4f * (float)deltaTime;
 
 			if (keyState.IsKeyDown(Key.W)) currentZ += 0.2f * (float)deltaTime;
 			if (keyState.IsKeyDown(Key.S)) currentZ -= 0.2f * (float)deltaTime;
