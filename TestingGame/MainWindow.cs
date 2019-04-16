@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
@@ -17,7 +18,7 @@ namespace TestingGame
 	{
 		private const int DefaultHeight = 720;
 		private const int DefaultWidth = 1280;
-		
+
 		private const float StartingZ = -0.75f;
 
 		private float fieldOfView = 60f;
@@ -75,6 +76,12 @@ namespace TestingGame
 		protected override void OnLoad(EventArgs e)
 		{
 			Console.WriteLine("On Load");
+			
+			var item = new TexturedVertex(Vector4.One, Vector2.One);
+
+			var sizeOfStruct = Marshal.SizeOf(item);
+			
+			Console.WriteLine($"Size Struct <{sizeOfStruct}> | TexturedVertex <{TexturedVertex.Size}>");
 
 			CreateProjection();
 
