@@ -19,16 +19,12 @@ namespace TestingGame
 
 		private const int DefaultWidth = 1280;
 		private const float StartingZ = -0.75f;
-		
-		private float currentX;
-		private float currentY;
-		private float currentZ = StartingZ;
+
 		private float fieldOfView = 60f;
 
 		private ShaderProgram fillShaderProgram;
 
 		private Matrix4 projectionMatrix;
-		private Vector4 rotations = Vector4.Zero;
 
 		private bool stopped;
 
@@ -141,20 +137,6 @@ namespace TestingGame
 
 			var cube = Cubes.FirstOrDefault();
 
-			// var translation = Matrix4.CreateTranslation((float)(Math.Sin(k * 5f) * (count + 0.5f)),
-			// 											(float)(Math.Cos(k * 5f) * (count + 0.5f)),
-			// 											-2.7f);
-
-			// var k = (float)Math.Sin((float)(GameTime * .5f));
-			//var k = (float)(GameTime * .5f);
-
-			var translation = Matrix4.CreateTranslation(currentX, currentY, currentZ);
-
-			//rotations.X = k;
-			//rotations.Y = k;
-
-			// rotations.Z = k;
-
 			cube.Render(projectionMatrix);
 
 			//PineWheelCubes();
@@ -174,10 +156,11 @@ namespace TestingGame
 		protected override void OnUpdateFrame(FrameEventArgs e)
 		{
 			//GameTime += e.Time;
+			var keyState = Keyboard.GetState();
 
-			//foreach (var cube in Cubes) cube.Update(GameTime);
+			foreach (var cube in Cubes) cube.Update(keyState, e.Time);
 
-			HandleKeyboard(e.Time);
+			HandleKeyboard(keyState);
 		}
 
 		private void CompileShaders()
@@ -245,10 +228,8 @@ namespace TestingGame
 			Triangles.Add(triangle);
 		}
 
-		private void HandleKeyboard(double deltaTime)
+		private void HandleKeyboard(KeyboardState keyState)
 		{
-			var keyState = Keyboard.GetState();
-
 			if (keyState.IsKeyDown(Key.Escape))
 			{
 				Console.WriteLine("Exiting . . . ");
@@ -279,21 +260,6 @@ namespace TestingGame
 				fieldOfView = 60f;
 				CreateProjection();
 			}
-
-			if (keyState.IsKeyDown(Key.Q)) rotations.Y += 0.4f * (float)deltaTime;
-			if (keyState.IsKeyDown(Key.E)) rotations.Y -= 0.4f * (float)deltaTime;
-
-			if (keyState.IsKeyDown(Key.R)) rotations.X += 0.4f * (float)deltaTime;
-			if (keyState.IsKeyDown(Key.F)) rotations.X -= 0.4f * (float)deltaTime;
-
-			if (keyState.IsKeyDown(Key.W)) currentZ += 0.2f * (float)deltaTime;
-			if (keyState.IsKeyDown(Key.S)) currentZ -= 0.2f * (float)deltaTime;
-
-			if (keyState.IsKeyDown(Key.A)) currentX += 0.2f * (float)deltaTime;
-			if (keyState.IsKeyDown(Key.D)) currentX -= 0.2f * (float)deltaTime;
-
-			if (keyState.IsKeyDown(Key.LShift)) currentY += 0.2f   * (float)deltaTime;
-			if (keyState.IsKeyDown(Key.LControl)) currentY -= 0.2f * (float)deltaTime;
 		}
 
 		private void OnClosed(object sender, EventArgs e) => Exit();

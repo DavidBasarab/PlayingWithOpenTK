@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
+using OpenTK.Input;
 
 namespace TestingGame
 {
 	public class Cube : IDisposable
 	{
-		private readonly Vector3 currentPostion;
 		private readonly RenderObject faces;
 		private readonly RenderObject lines;
 		private readonly float side;
+		private Vector3 currentPostion;
 		private Matrix4 modelView;
-		private readonly Vector3 rotation;
+		private Vector3 rotation;
 
 		public Cube(Vector3 currentPostion, float side, Color4 color)
 		{
@@ -66,7 +67,23 @@ namespace TestingGame
 			lines.Render();
 		}
 
-		public void Update(double gameTime) { }
+		public void Update(KeyboardState keyState, double deltaTime)
+		{
+			if (keyState.IsKeyDown(Key.Q)) rotation.Y += 0.4f * (float)deltaTime;
+			if (keyState.IsKeyDown(Key.E)) rotation.Y -= 0.4f * (float)deltaTime;
+
+			if (keyState.IsKeyDown(Key.R)) rotation.X += 0.4f * (float)deltaTime;
+			if (keyState.IsKeyDown(Key.F)) rotation.X -= 0.4f * (float)deltaTime;
+
+			if (keyState.IsKeyDown(Key.W)) currentPostion.Z += 0.2f * (float)deltaTime;
+			if (keyState.IsKeyDown(Key.S)) currentPostion.Z -= 0.2f * (float)deltaTime;
+
+			if (keyState.IsKeyDown(Key.A)) currentPostion.X += 0.2f * (float)deltaTime;
+			if (keyState.IsKeyDown(Key.D)) currentPostion.X -= 0.2f * (float)deltaTime;
+
+			if (keyState.IsKeyDown(Key.LShift)) currentPostion.Y += 0.2f   * (float)deltaTime;
+			if (keyState.IsKeyDown(Key.LControl)) currentPostion.Y -= 0.2f * (float)deltaTime;
+		}
 
 		private static List<Vertex> CreateCubeLines(float side)
 		{
