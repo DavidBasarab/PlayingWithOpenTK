@@ -78,8 +78,8 @@ namespace TestingGame
 			if (keyState.IsKeyDown(Key.W)) currentPostion.Z += 0.2f * (float)deltaTime;
 			if (keyState.IsKeyDown(Key.S)) currentPostion.Z -= 0.2f * (float)deltaTime;
 
-			if (keyState.IsKeyDown(Key.A)) currentPostion.X += 0.2f * (float)deltaTime;
-			if (keyState.IsKeyDown(Key.D)) currentPostion.X -= 0.2f * (float)deltaTime;
+			if (keyState.IsKeyDown(Key.A)) currentPostion.X -= 0.2f * (float)deltaTime;
+			if (keyState.IsKeyDown(Key.D)) currentPostion.X += 0.2f * (float)deltaTime;
 
 			if (keyState.IsKeyDown(Key.LShift)) currentPostion.Y += 0.2f   * (float)deltaTime;
 			if (keyState.IsKeyDown(Key.LControl)) currentPostion.Y -= 0.2f * (float)deltaTime;
