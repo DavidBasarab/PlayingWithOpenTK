@@ -26,6 +26,7 @@ namespace TestingGame
 		private ShaderProgram fillShaderProgram;
 
 		private Matrix4 projectionMatrix;
+		private Vector4 rotations = Vector4.Zero;
 
 		private bool stopped;
 
@@ -143,14 +144,12 @@ namespace TestingGame
 			// 											-2.7f);
 
 			// var k = (float)Math.Sin((float)(GameTime * .5f));
-			var k = (float)(GameTime * .5f);
+			//var k = (float)(GameTime * .5f);
 
 			var translation = Matrix4.CreateTranslation(currentX, currentY, currentZ);
 
-			var rotations = Vector4.Zero;
-
 			//rotations.X = k;
-			rotations.Y = k;
+			//rotations.Y = k;
 
 			// rotations.Z = k;
 
@@ -279,13 +278,16 @@ namespace TestingGame
 				CreateProjection();
 			}
 
+			if (keyState.IsKeyDown(Key.Q)) rotations.Y += 0.4f * (float)deltaTime;
+			if (keyState.IsKeyDown(Key.E)) rotations.Y -= 0.4f * (float)deltaTime;
+
 			if (keyState.IsKeyDown(Key.W)) currentZ += 0.2f * (float)deltaTime;
 			if (keyState.IsKeyDown(Key.S)) currentZ -= 0.2f * (float)deltaTime;
 
 			if (keyState.IsKeyDown(Key.A)) currentX += 0.2f * (float)deltaTime;
 			if (keyState.IsKeyDown(Key.D)) currentX -= 0.2f * (float)deltaTime;
-			
-			if (keyState.IsKeyDown(Key.LShift)) currentY += 0.2f * (float)deltaTime;
+
+			if (keyState.IsKeyDown(Key.LShift)) currentY += 0.2f   * (float)deltaTime;
 			if (keyState.IsKeyDown(Key.LControl)) currentY -= 0.2f * (float)deltaTime;
 		}
 
