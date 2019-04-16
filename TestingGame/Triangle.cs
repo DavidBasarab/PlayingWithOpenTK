@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using OpenTK;
+using TestingGame.Common;
 
 namespace TestingGame
 {
@@ -21,7 +22,7 @@ namespace TestingGame
 
 		public void Initialize()
 		{
-			Console.WriteLine($"PointA <{PointA}> | PointB <{PointB}> | PointC <{PointC}>");
+			Log.Info($"PointA <{PointA}> | PointB <{PointB}> | PointC <{PointC}>");
 
 			var vertices = new List<Vertex>
 							{
