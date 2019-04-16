@@ -24,11 +24,13 @@ namespace TestingGame
 		private Matrix4 projectionMatrix;
 
 		private bool stopped;
+		private float fieldOfView = 60f;
+		private float currentZ = -0.75f;
 
 		public float AspectRatio => (float)Width / Height;
 
 		private List<Cube> Cubes { get; } = new List<Cube>();
-
+		
 		private string ExecutingDirectory
 		{
 			get
@@ -141,7 +143,7 @@ namespace TestingGame
 			// var k = (float)Math.Sin((float)(GameTime * .5f));
 			var k = (float)(GameTime * .5f);
 
-			var translation = Matrix4.CreateTranslation(0f, 0, -0.75f);
+			var translation = Matrix4.CreateTranslation(0f, 0, currentZ);
 
 			var rotations = Vector4.Zero;
 
@@ -171,7 +173,7 @@ namespace TestingGame
 
 			//foreach (var cube in Cubes) cube.Update(GameTime);
 
-			HandleKeyboard();
+			HandleKeyboard(e.Time);
 		}
 
 		private void CompileShaders()
@@ -183,7 +185,7 @@ namespace TestingGame
 
 		private void CreateProjection()
 		{
-			projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(60 * (float)Math.PI / 180f, AspectRatio, .001f, 4000f);
+			projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(fieldOfView * (float)Math.PI / 180f, AspectRatio, .001f, 4000f);
 
 			//projectionMatrix = Matrix4.CreatePerspectiveOffCenter(0, DefaultWidth, DefaultHeight, 0, 1f, 4000f);
 		}
@@ -239,7 +241,7 @@ namespace TestingGame
 			Triangles.Add(triangle);
 		}
 
-		private void HandleKeyboard()
+		private void HandleKeyboard(double deltaTime)
 		{
 			var keyState = Keyboard.GetState();
 
@@ -249,6 +251,33 @@ namespace TestingGame
 
 				Exit();
 			}
+			
+			if (keyState.IsKeyDown(Key.M)) GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Point);
+
+			if (keyState.IsKeyDown(Key.Comma)) GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
+
+			if (keyState.IsKeyDown(Key.Period)) GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+
+			if (keyState.IsKeyDown(Key.J))
+			{
+				fieldOfView = 40f;
+				CreateProjection();
+			}
+
+			if (keyState.IsKeyDown(Key.K))
+			{
+				fieldOfView = 50f;
+				CreateProjection();
+			}
+
+			if (keyState.IsKeyDown(Key.L))
+			{
+				fieldOfView = 60f;
+				CreateProjection();
+			}
+
+			if (keyState.IsKeyDown(Key.W)) currentZ += 0.2f * (float)deltaTime;
+			if (keyState.IsKeyDown(Key.S)) currentZ -= 0.2f * (float)deltaTime;
 		}
 
 		private void OnClosed(object sender, EventArgs e) => Exit();
