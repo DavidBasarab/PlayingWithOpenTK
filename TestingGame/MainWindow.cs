@@ -18,19 +18,20 @@ namespace TestingGame
 		private const int DefaultHeight = 720;
 
 		private const int DefaultWidth = 1280;
+		private float currentX;
+		private float currentZ = -0.75f;
+		private float fieldOfView = 60f;
 
 		private ShaderProgram fillShaderProgram;
 
 		private Matrix4 projectionMatrix;
 
 		private bool stopped;
-		private float fieldOfView = 60f;
-		private float currentZ = -0.75f;
 
 		public float AspectRatio => (float)Width / Height;
 
 		private List<Cube> Cubes { get; } = new List<Cube>();
-		
+
 		private string ExecutingDirectory
 		{
 			get
@@ -143,12 +144,13 @@ namespace TestingGame
 			// var k = (float)Math.Sin((float)(GameTime * .5f));
 			var k = (float)(GameTime * .5f);
 
-			var translation = Matrix4.CreateTranslation(0f, 0, currentZ);
+			var translation = Matrix4.CreateTranslation(currentX, 0, currentZ);
 
 			var rotations = Vector4.Zero;
 
 			//rotations.X = k;
 			rotations.Y = k;
+
 			// rotations.Z = k;
 
 			cube.Render(projectionMatrix, translation, rotations);
@@ -251,7 +253,7 @@ namespace TestingGame
 
 				Exit();
 			}
-			
+
 			if (keyState.IsKeyDown(Key.M)) GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Point);
 
 			if (keyState.IsKeyDown(Key.Comma)) GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
@@ -278,6 +280,9 @@ namespace TestingGame
 
 			if (keyState.IsKeyDown(Key.W)) currentZ += 0.2f * (float)deltaTime;
 			if (keyState.IsKeyDown(Key.S)) currentZ -= 0.2f * (float)deltaTime;
+
+			if (keyState.IsKeyDown(Key.A)) currentX += 0.2f * (float)deltaTime;
+			if (keyState.IsKeyDown(Key.D)) currentX -= 0.2f * (float)deltaTime;
 		}
 
 		private void OnClosed(object sender, EventArgs e) => Exit();
