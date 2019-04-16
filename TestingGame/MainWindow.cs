@@ -19,6 +19,7 @@ namespace TestingGame
 
 		private const int DefaultWidth = 1280;
 		private float currentX;
+		private float currentY;
 		private float currentZ = -0.75f;
 		private float fieldOfView = 60f;
 
@@ -144,7 +145,7 @@ namespace TestingGame
 			// var k = (float)Math.Sin((float)(GameTime * .5f));
 			var k = (float)(GameTime * .5f);
 
-			var translation = Matrix4.CreateTranslation(currentX, 0, currentZ);
+			var translation = Matrix4.CreateTranslation(currentX, currentY, currentZ);
 
 			var rotations = Vector4.Zero;
 
@@ -283,6 +284,9 @@ namespace TestingGame
 
 			if (keyState.IsKeyDown(Key.A)) currentX += 0.2f * (float)deltaTime;
 			if (keyState.IsKeyDown(Key.D)) currentX -= 0.2f * (float)deltaTime;
+			
+			if (keyState.IsKeyDown(Key.LShift)) currentY += 0.2f * (float)deltaTime;
+			if (keyState.IsKeyDown(Key.LControl)) currentY -= 0.2f * (float)deltaTime;
 		}
 
 		private void OnClosed(object sender, EventArgs e) => Exit();
