@@ -18,9 +18,11 @@ namespace TestingGame
 		private const int DefaultHeight = 720;
 
 		private const int DefaultWidth = 1280;
+		private const float StartingZ = -0.75f;
+		
 		private float currentX;
 		private float currentY;
-		private float currentZ = -0.75f;
+		private float currentZ = StartingZ;
 		private float fieldOfView = 60f;
 
 		private ShaderProgram fillShaderProgram;
@@ -89,7 +91,7 @@ namespace TestingGame
 			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Yellow));
 			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
 			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
-			Cubes.Add(new Cube(Vector3.Zero, 0.15f, Color4.Blue));
+			Cubes.Add(new Cube(new Vector3(0, 0, StartingZ), 0.15f, Color4.Blue));
 
 			//
 			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
@@ -280,7 +282,7 @@ namespace TestingGame
 
 			if (keyState.IsKeyDown(Key.Q)) rotations.Y += 0.4f * (float)deltaTime;
 			if (keyState.IsKeyDown(Key.E)) rotations.Y -= 0.4f * (float)deltaTime;
-			
+
 			if (keyState.IsKeyDown(Key.R)) rotations.X += 0.4f * (float)deltaTime;
 			if (keyState.IsKeyDown(Key.F)) rotations.X -= 0.4f * (float)deltaTime;
 
