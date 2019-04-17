@@ -85,13 +85,23 @@ namespace TestingGame
 			Log.Debug($"Size Struct <{sizeOfStruct}> | TexturedVertex <{TexturedVertex.Size}>");
 			
 			CreateProjection();
+			//CreateTriangles();
+			//CreateCubes();
 
-			ModelShaderProgram.Initialize();
-			ProjectionProgram.Initialize();
+			CursorVisible = true;
+			VSync = VSyncMode.Off;
 
-			CreateTriangles();
+			CompileShaders();
 
-			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
+			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
+			GL.PatchParameter(PatchParameterInt.PatchVertices, 3);
+			GL.Enable(EnableCap.DepthTest);
+
+			Closed += OnClosed;
+		}
+
+		private void CreateCubes()
+		{ // Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
 			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Yellow));
 			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
 			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
@@ -117,17 +127,6 @@ namespace TestingGame
 			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Blue));
 
 			// Cubes.Add(new Cube(.2f, Color4.HotPink));
-
-			CursorVisible = true;
-			VSync = VSyncMode.Off;
-
-			CompileShaders();
-
-			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
-			GL.PatchParameter(PatchParameterInt.PatchVertices, 3);
-			GL.Enable(EnableCap.DepthTest);
-
-			Closed += OnClosed;
 		}
 
 		protected override void OnRenderFrame(FrameEventArgs e)
@@ -176,6 +175,7 @@ namespace TestingGame
 			fillShaderProgramLegacy = new ShaderProgramLegacy(Path.Combine(ExecutingDirectory, @"Shaders\fillVertexShader.vert"), Path.Combine(ExecutingDirectory, @"Shaders\fragmentShader.frag"));
 
 			ModelShaderProgram.Initialize();
+			ProjectionProgram.Initialize();
 		}
 
 		private void CreateProjection()
