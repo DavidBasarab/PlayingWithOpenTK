@@ -7,7 +7,7 @@ using OpenTK.Input;
 
 namespace TestingGame
 {
-	public class Cube : IDisposable
+	public class BasicCube : IDisposable
 	{
 		private readonly RenderObject faces;
 		private readonly RenderObject lines;
@@ -16,7 +16,7 @@ namespace TestingGame
 		private Matrix4 modelView;
 		private Vector3 rotation;
 
-		public Cube(Vector3 currentPostion, float side, Color4 color)
+		public BasicCube(Vector3 currentPostion, float side, Color4 color)
 		{
 			this.currentPostion = currentPostion;
 
