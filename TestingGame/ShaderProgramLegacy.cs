@@ -5,14 +5,14 @@ using TestingGame.Common;
 
 namespace TestingGame
 {
-	public class ShaderProgram : IDisposable
+	public class ShaderProgramLegacy : IDisposable
 	{
 		private readonly string fragmentShaderPath;
 		private readonly string vertexShaderPath;
 
 		private int programId = -77;
 
-		public ShaderProgram(string vertexShaderPath, string fragmentShaderPath)
+		public ShaderProgramLegacy(string vertexShaderPath, string fragmentShaderPath)
 		{
 			this.vertexShaderPath = vertexShaderPath;
 			this.fragmentShaderPath = fragmentShaderPath;

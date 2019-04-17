@@ -24,7 +24,7 @@ namespace TestingGame
 
 		private float fieldOfView = 60f;
 
-		private ShaderProgram fillShaderProgram;
+		private ShaderProgramLegacy fillShaderProgramLegacy;
 
 		private Matrix4 projectionMatrix;
 
@@ -65,7 +65,7 @@ namespace TestingGame
 
 			foreach (var triangle in Triangles) triangle.Dispose();
 
-			fillShaderProgram.Dispose();
+			fillShaderProgramLegacy.Dispose();
 			ModelShaderProgram.Dispose();
 			ProjectionProgram.Dispose();
 
@@ -173,7 +173,7 @@ namespace TestingGame
 
 		private void CompileShaders()
 		{
-			fillShaderProgram = new ShaderProgram(Path.Combine(ExecutingDirectory, @"Shaders\fillVertexShader.vert"), Path.Combine(ExecutingDirectory, @"Shaders\fragmentShader.frag"));
+			fillShaderProgramLegacy = new ShaderProgramLegacy(Path.Combine(ExecutingDirectory, @"Shaders\fillVertexShader.vert"), Path.Combine(ExecutingDirectory, @"Shaders\fragmentShader.frag"));
 
 			ModelShaderProgram.Initialize();
 		}
@@ -302,7 +302,7 @@ namespace TestingGame
 
 		private void RenderTriangles()
 		{
-			fillShaderProgram.Use();
+			fillShaderProgramLegacy.Use();
 
 			GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
 

@@ -6,7 +6,7 @@ namespace TestingGame
 {
 	public static class ModelShaderProgram
 	{
-		private static readonly Lazy<ShaderProgram> instance = new Lazy<ShaderProgram>(() => new ShaderProgram(Path.Combine(ExecutingDirectory, @"Shaders\ModelVertexShader.vert"), Path.Combine(ExecutingDirectory, @"Shaders\fragmentShader.frag")));
+		private static readonly Lazy<ShaderProgramLegacy> instance = new Lazy<ShaderProgramLegacy>(() => new ShaderProgramLegacy(Path.Combine(ExecutingDirectory, @"Shaders\ModelVertexShader.vert"), Path.Combine(ExecutingDirectory, @"Shaders\fragmentShader.frag")));
 
 		private static string ExecutingDirectory
 		{
@@ -22,7 +22,7 @@ namespace TestingGame
 			}
 		}
 
-		private static ShaderProgram Instance => instance.Value;
+		private static ShaderProgramLegacy Instance => instance.Value;
 
 		public static void Dispose() => Instance.Dispose();
 
