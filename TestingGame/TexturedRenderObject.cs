@@ -9,7 +9,7 @@ namespace TestingGame
 {
 	public class TexturedRenderObject : Renderable
 	{
-		private int texture;
+		private readonly int texture;
 
 		public TexturedRenderObject(TexturedVertex[] vertices, int program, string filename) : base(program, vertices.Length)
 		{
@@ -45,6 +45,13 @@ namespace TestingGame
 			GL.VertexArrayVertexBuffer(VertexArray, 0, Buffer, IntPtr.Zero, TexturedVertex.Size);
 
 			texture = InitTextures(filename);
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing) GL.DeleteTexture(texture);
+
+			base.Dispose(disposing);
 		}
 
 		private int InitTextures(string filename)
