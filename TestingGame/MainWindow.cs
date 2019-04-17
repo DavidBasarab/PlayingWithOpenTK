@@ -77,16 +77,22 @@ namespace TestingGame
 		protected override void OnLoad(EventArgs e)
 		{
 			Log.Info("On load");
-			
+
 			var item = new TexturedVertex(Vector4.One, Vector2.One);
 
 			var sizeOfStruct = Marshal.SizeOf(item);
-			
+
 			Log.Debug($"Size Struct <{sizeOfStruct}> | TexturedVertex <{TexturedVertex.Size}>");
-			
+
 			CreateProjection();
+
 			//CreateTriangles();
 			//CreateCubes();
+
+			var solidProgram = new ShaderProgram();
+
+			solidProgram.AddShader(ShaderType.VertexShader, "PipeVertexShader.vert");
+			solidProgram.AddShader(ShaderType.FragmentShader, "PipeVertexShader.vert");
 
 			CursorVisible = true;
 			VSync = VSyncMode.Off;
@@ -98,35 +104,6 @@ namespace TestingGame
 			GL.Enable(EnableCap.DepthTest);
 
 			Closed += OnClosed;
-		}
-
-		private void CreateCubes()
-		{ // Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
-			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Yellow));
-			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
-			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
-			Cubes.Add(new BasicCube(new Vector3(0.25f, 0, StartingZ), 0.15f, Color4.Blue));
-
-			//
-			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
-			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Yellow));
-			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
-			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
-			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Blue));
-			//
-			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
-			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Yellow));
-			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
-			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
-			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Blue));
-			//
-			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
-			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Yellow));
-			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
-			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
-			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Blue));
-
-			// Cubes.Add(new Cube(.2f, Color4.HotPink));
 		}
 
 		protected override void OnRenderFrame(FrameEventArgs e)
@@ -176,6 +153,35 @@ namespace TestingGame
 
 			ModelShaderProgram.Initialize();
 			ProjectionProgram.Initialize();
+		}
+
+		private void CreateCubes()
+		{ // Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Yellow));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
+			Cubes.Add(new BasicCube(new Vector3(0.25f, 0, StartingZ), 0.15f, Color4.Blue));
+
+			//
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Yellow));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Blue));
+			//
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Yellow));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Blue));
+			//
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Yellow));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Blue));
+
+			// Cubes.Add(new Cube(.2f, Color4.HotPink));
 		}
 
 		private void CreateProjection()
