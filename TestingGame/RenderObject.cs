@@ -23,8 +23,7 @@ namespace TestingGame
 			GL.BindBuffer(BufferTarget.ArrayBuffer, vertexArray);
 
 			// create first buffer: vertex
-			GL.NamedBufferStorage(
-								buffer,
+			GL.NamedBufferStorage(buffer,
 								Vertex.Size * vertices.Count,    // the size needed by this buffer
 								vertices.ToArray(),              // data to initialize with
 								BufferStorageFlags.MapWriteBit); // at this point we will only write to the buffer
@@ -32,8 +31,7 @@ namespace TestingGame
 			GL.VertexArrayAttribBinding(vertexArray, 0, 0);
 			GL.EnableVertexArrayAttrib(vertexArray, 0);
 
-			GL.VertexArrayAttribFormat(
-										vertexArray,
+			GL.VertexArrayAttribFormat(vertexArray,
 										0,                      // attribute index, from the shader location = 0
 										4,                      // size of attribute, vec4
 										VertexAttribType.Float, // contains floats
@@ -44,8 +42,7 @@ namespace TestingGame
 
 			GL.EnableVertexArrayAttrib(vertexArray, 1);
 
-			GL.VertexArrayAttribFormat(
-										vertexArray,
+			GL.VertexArrayAttribFormat(vertexArray,
 										1,                      // attribute index, from the shader location = 1
 										4,                      // size of attribute, vec4
 										VertexAttribType.Float, // contains floats
