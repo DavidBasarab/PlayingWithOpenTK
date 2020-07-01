@@ -91,8 +91,8 @@ namespace TestingGame
 
 			var solidProgram = new ShaderProgram();
 
-			solidProgram.AddShader(ShaderType.VertexShader, "PipeVertexShader.vert");
-			solidProgram.AddShader(ShaderType.FragmentShader, "PipeVertexShader.vert");
+			solidProgram.AddShader(ShaderType.VertexShader, Path.Combine(DirectoryTools.ExecutingDirectory, "PipeVertexShader.vert"));
+			solidProgram.AddShader(ShaderType.FragmentShader, Path.Combine(DirectoryTools.ExecutingDirectory, "PipeVertexShader.vert"));
 
 			CursorVisible = true;
 			VSync = VSyncMode.Off;
@@ -195,10 +195,7 @@ namespace TestingGame
 		{
 			var triangle = new Triangle
 							{
-								PointA = new PointF(-0.5f, 0.0f),
-								PointB = new PointF(-1f, -1f),
-								PointC = new PointF(0f, -1f),
-								Color = Color.Purple
+								PointA = new PointF(-0.5f, 0.0f), PointB = new PointF(-1f, -1f), PointC = new PointF(0f, -1f), Color = Color.Purple
 							};
 
 			triangle.Initialize();
@@ -207,10 +204,7 @@ namespace TestingGame
 
 			triangle = new Triangle
 						{
-							PointA = new PointF(-0.5f, 0.0f),
-							PointB = new PointF(-1f, 1f),
-							PointC = new PointF(0f, 1f),
-							Color = Color.HotPink
+							PointA = new PointF(-0.5f, 0.0f), PointB = new PointF(-1f, 1f), PointC = new PointF(0f, 1f), Color = Color.HotPink
 						};
 
 			triangle.Initialize();
@@ -219,10 +213,7 @@ namespace TestingGame
 
 			triangle = new Triangle
 						{
-							PointA = new PointF(1.0f, 0.5f),
-							PointB = new PointF(0f, 1f),
-							PointC = new PointF(0f, 0f),
-							Color = Color.Green
+							PointA = new PointF(1.0f, 0.5f), PointB = new PointF(0f, 1f), PointC = new PointF(0f, 0f), Color = Color.Green
 						};
 
 			triangle.Initialize();
@@ -231,10 +222,7 @@ namespace TestingGame
 
 			triangle = new Triangle
 						{
-							PointA = new PointF(1.0f, -0.5f),
-							PointB = new PointF(0f, -1f),
-							PointC = new PointF(0f, 0f),
-							Color = Color.Orange
+							PointA = new PointF(1.0f, -0.5f), PointB = new PointF(0f, -1f), PointC = new PointF(0f, 0f), Color = Color.Orange
 						};
 
 			triangle.Initialize();
@@ -294,9 +282,7 @@ namespace TestingGame
 
 					var rotations = new Vector4
 									{
-										X = k * 13.0f + i,
-										Y = k * 13.0f + i,
-										Z = k * 3.0f  + i
+										X = k * 13.0f + i, Y = k * 13.0f + i, Z = k * 3.0f + i
 									};
 
 					cube.Render(projectionMatrix);
