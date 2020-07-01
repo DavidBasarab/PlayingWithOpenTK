@@ -91,8 +91,8 @@ namespace TestingGame
 
 			var solidProgram = new ShaderProgram();
 
-			solidProgram.AddShader(ShaderType.VertexShader, Path.Combine(DirectoryTools.ExecutingDirectory, "PipeVertexShader.vert"));
-			solidProgram.AddShader(ShaderType.FragmentShader, Path.Combine(DirectoryTools.ExecutingDirectory, "PipeVertexShader.vert"));
+			solidProgram.AddShader(ShaderType.VertexShader, Path.Combine(DirectoryTools.ExecutingDirectory, @"Shaders\PipeVertexShader.vert"));
+			solidProgram.AddShader(ShaderType.FragmentShader, Path.Combine(DirectoryTools.ExecutingDirectory, @"Shaders\PipeVertexShader.vert"));
 
 			CursorVisible = true;
 			VSync = VSyncMode.Off;
