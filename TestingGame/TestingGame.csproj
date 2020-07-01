@@ -2,17 +2,18 @@
   <PropertyGroup>
     <DebugType>full</DebugType>
     <OutputType>exe</OutputType>
-    <LangVersion>7.2</LangVersion>
-    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latestmajor</LangVersion>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.4.3" />
-    <PackageReference Include="JetBrains.Annotations" Version="2019.1.1" />
-    <PackageReference Include="OpenTK" Version="3.0.1" />
+    <PackageReference Include="CommandLineParser" Version="2.8.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="2020.1.0" />
+    <PackageReference Include="OpenTK" Version="3.2.0" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Shaders\*.frag">

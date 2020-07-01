@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace TestingGame
 {
 	//http://dreamstatecoding.blogspot.com/2017/01/opengl-4-with-opentk-in-c-part-2.html
-	public class ProgramSender
+	public static class ProgramSender
 	{
 		private static bool running = true;
 
