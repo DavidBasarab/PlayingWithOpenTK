@@ -87,7 +87,7 @@ namespace TestingGame
 			CreateProjection();
 
 			//CreateTriangles();
-			//CreateCubes();
+			CreateCubes();
 
 			var solidProgram = new ShaderProgram();
 
@@ -156,7 +156,8 @@ namespace TestingGame
 		}
 
 		private void CreateCubes()
-		{ // Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
+		{ 
+			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Tan));
 			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Yellow));
 			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Ivory));
 			// Cubes.Add(new Cube(new PointF(0f, 0f), 0.25f, Color4.Cyan));
